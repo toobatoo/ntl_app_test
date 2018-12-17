@@ -1,0 +1,414 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+        <div class="row content">
+            
+            <div class="row col-xs-5 col-lg-5" style="margin-left: 7px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                            Suivi des conformités
+                    </div>
+                    <div class="panel-body">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>
+                                    <div id="container" 
+                                        style="width: 100%; margin: 0 auto">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="row col-xs-7 col-lg-7" style="margin-left: 7px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                            Détail par items
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-condensed" style="width: 100%;">
+                            <tr>
+                                <th>Items</th>
+                                <th>Conformes</th>
+                                <th>Non conformes</th>
+                                <th>NO</th>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>BIV indice</strong></td>
+                                <td class="biv_indice_conforme text-center"></td>
+                                <td class="biv_indice_nc text-center"></td>
+                                <td class="biv_indice_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>BIV direction</strong></td>
+                                <td class="biv_direction_conforme text-center"></td>
+                                <td class="biv_direction_nc text-center"></td>
+                                <td class="biv_direction_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>BIV attente</strong></td>
+                                <td class="biv_attente_conforme text-center"></td>
+                                <td class="biv_attente_nc text-center"></td>
+                                <td class="biv_attente_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Arrêt trottoir montée</strong></td>
+                                <td class="MR_2_1_conforme text-center"></td>
+                                <td class="MR_2_1_nc text-center"></td>
+                                <td class="MR_2_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Arrêt trottoir descente</strong></td>
+                                <td class="MR_2_1_bis_conforme text-center"></td>
+                                <td class="MR_2_1_bis_nc text-center"></td>
+                                <td class="MR_2_1_bis_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 2.1</strong></td>
+                                <td class="Q_2_1_conforme text-center"></td>
+                                <td class="Q_2_1_nc text-center"></td>
+                                <td class="Q_2_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 2.2</strong></td>
+                                <td class="Q_2_2_conforme text-center"></td>
+                                <td class="Q_2_2_nc text-center"></td>
+                                <td class="Q_2_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 2.3</strong></td>
+                                <td class="Q_2_3_conforme text-center"></td>
+                                <td class="Q_2_3_nc text-center"></td>
+                                <td class="Q_2_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 2.4</strong></td>
+                                <td class="Q_2_4_conforme text-center"></td>
+                                <td class="Q_2_4_nc text-center"></td>
+                                <td class="Q_2_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 3.1</strong></td>
+                                <td class="Q_3_1_conforme text-center"></td>
+                                <td class="Q_3_1_nc text-center"></td>
+                                <td class="Q_3_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 3.2</strong></td>
+                                <td class="Q_3_2_conforme text-center"></td>
+                                <td class="Q_3_2_nc text-center"></td>
+                                <td class="Q_3_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 3.3</strong></td>
+                                <td class="Q_3_3_conforme text-center"></td>
+                                <td class="Q_3_3_nc text-center"></td>
+                                <td class="Q_3_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 3.4</strong></td>
+                                <td class="Q_3_4_conforme text-center"></td>
+                                <td class="Q_3_4_nc text-center"></td>
+                                <td class="Q_3_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 4.1</strong></td>
+                                <td class="Q_4_1_conforme text-center"></td>
+                                <td class="Q_4_1_nc text-center"></td>
+                                <td class="Q_4_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 4.2</strong></td>
+                                <td class="Q_4_2_conforme text-center"></td>
+                                <td class="Q_4_2_nc text-center"></td>
+                                <td class="Q_4_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 4.3</strong></td>
+                                <td class="Q_4_3_conforme text-center"></td>
+                                <td class="Q_4_3_nc text-center"></td>
+                                <td class="Q_4_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.1</strong></td>
+                                <td class="Q_5_1_conforme text-center"></td>
+                                <td class="Q_5_1_nc text-center"></td>
+                                <td class="Q_5_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.2</strong></td>
+                                <td class="Q_5_2_conforme text-center"></td>
+                                <td class="Q_5_2_nc text-center"></td>
+                                <td class="Q_5_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.3</strong></td>
+                                <td class="Q_5_3_conforme text-center"></td>
+                                <td class="Q_5_3_nc text-center"></td>
+                                <td class="Q_5_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.4</strong></td>
+                                <td class="Q_5_4_conforme text-center"></td>
+                                <td class="Q_5_4_nc text-center"></td>
+                                <td class="Q_5_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.5</strong></td>
+                                <td class="Q_5_5_conforme text-center"></td>
+                                <td class="Q_5_5_nc text-center"></td>
+                                <td class="Q_5_5_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.6</strong></td>
+                                <td class="Q_5_6_conforme text-center"></td>
+                                <td class="Q_5_6_nc text-center"></td>
+                                <td class="Q_5_6_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.7</strong></td>
+                                <td class="Q_5_7_conforme text-center"></td>
+                                <td class="Q_5_7_nc text-center"></td>
+                                <td class="Q_5_7_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 5.8</strong></td>
+                                <td class="Q_5_8_conforme text-center"></td>
+                                <td class="Q_5_8_nc text-center"></td>
+                                <td class="Q_5_8_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.1</strong></td>
+                                <td class="Q_6_1_conforme text-center"></td>
+                                <td class="Q_6_1_nc text-center"></td>
+                                <td class="Q_6_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.2</strong></td>
+                                <td class="Q_6_2_conforme text-center"></td>
+                                <td class="Q_6_2_nc text-center"></td>
+                                <td class="Q_6_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.3</strong></td>
+                                <td class="Q_6_3_conforme text-center"></td>
+                                <td class="Q_6_3_nc text-center"></td>
+                                <td class="Q_6_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.4</strong></td>
+                                <td class="Q_6_4_conforme text-center"></td>
+                                <td class="Q_6_4_nc text-center"></td>
+                                <td class="Q_6_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.5</strong></td>
+                                <td class="Q_6_5_conforme text-center"></td>
+                                <td class="Q_6_5_nc text-center"></td>
+                                <td class="Q_6_5_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.6</strong></td>
+                                <td class="Q_6_6_conforme text-center"></td>
+                                <td class="Q_6_6_nc text-center"></td>
+                                <td class="Q_6_6_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.7</strong></td>
+                                <td class="Q_6_7_conforme text-center"></td>
+                                <td class="Q_6_7_nc text-center"></td>
+                                <td class="Q_6_7_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.8</strong></td>
+                                <td class="Q_6_8_conforme text-center"></td>
+                                <td class="Q_6_8_nc text-center"></td>
+                                <td class="Q_6_8_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.9</strong></td>
+                                <td class="Q_6_9_conforme text-center"></td>
+                                <td class="Q_6_9_nc text-center"></td>
+                                <td class="Q_6_9_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.10</strong></td>
+                                <td class="Q_6_10_conforme text-center"></td>
+                                <td class="Q_6_10_nc text-center"></td>
+                                <td class="Q_6_10_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.11</strong></td>
+                                <td class="Q_6_11_conforme text-center"></td>
+                                <td class="Q_6_11_nc text-center"></td>
+                                <td class="Q_6_11_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.12</strong></td>
+                                <td class="Q_6_12_conforme text-center"></td>
+                                <td class="Q_6_12_nc text-center"></td>
+                                <td class="Q_6_12_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.13</strong></td>
+                                <td class="Q_6_13_conforme text-center"></td>
+                                <td class="Q_6_13_nc text-center"></td>
+                                <td class="Q_6_13_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 6.14</strong></td>
+                                <td class="Q_6_14_conforme text-center"></td>
+                                <td class="Q_6_14_nc text-center"></td>
+                                <td class="Q_6_14_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>Q 7.1</strong></td>
+                                <td class="Q_7_1_conforme text-center"></td>
+                                <td class="Q_7_1_nc text-center"></td>
+                                <td class="Q_7_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 3.1</strong></td>
+                                <td class="MR_3_1_conforme text-center"></td>
+                                <td class="MR_3_1_nc text-center"></td>
+                                <td class="MR_3_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 3.2</strong></td>
+                                <td class="MR_3_2_conforme text-center"></td>
+                                <td class="MR_3_2_nc text-center"></td>
+                                <td class="MR_3_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 4.1</strong></td>
+                                <td class="MR_4_1_conforme text-center"></td>
+                                <td class="MR_4_1_nc text-center"></td>
+                                <td class="MR_4_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 4.2</strong></td>
+                                <td class="MR_4_2_conforme text-center"></td>
+                                <td class="MR_4_2_nc text-center"></td>
+                                <td class="MR_4_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 5.1</strong></td>
+                                <td class="MR_5_1_conforme text-center"></td>
+                                <td class="MR_5_1_nc text-center"></td>
+                                <td class="MR_5_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 5.2</strong></td>
+                                <td class="MR_5_2_conforme text-center"></td>
+                                <td class="MR_5_2_nc text-center"></td>
+                                <td class="MR_5_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 5.3</strong></td>
+                                <td class="MR_5_3_conforme text-center"></td>
+                                <td class="MR_5_3_nc text-center"></td>
+                                <td class="MR_5_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 5.4</strong></td>
+                                <td class="MR_5_4_conforme text-center"></td>
+                                <td class="MR_5_4_nc text-center"></td>
+                                <td class="MR_5_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 5.5</strong></td>
+                                <td class="MR_5_5_conforme text-center"></td>
+                                <td class="MR_5_5_nc text-center"></td>
+                                <td class="MR_5_5_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 6.1</strong></td>
+                                <td class="MR_6_1_conforme text-center"></td>
+                                <td class="MR_6_1_nc text-center"></td>
+                                <td class="MR_6_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 6.2</strong></td>
+                                <td class="MR_6_2_conforme text-center"></td>
+                                <td class="MR_6_2_nc text-center"></td>
+                                <td class="MR_6_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 6.3</strong></td>
+                                <td class="MR_6_3_conforme text-center"></td>
+                                <td class="MR_6_3_nc text-center"></td>
+                                <td class="MR_6_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 6.4</strong></td>
+                                <td class="MR_6_4_conforme text-center"></td>
+                                <td class="MR_6_4_nc text-center"></td>
+                                <td class="MR_6_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.1</strong></td>
+                                <td class="MR_7_1_conforme text-center"></td>
+                                <td class="MR_7_1_nc text-center"></td>
+                                <td class="MR_7_1_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.2</strong></td>
+                                <td class="MR_7_2_conforme text-center"></td>
+                                <td class="MR_7_2_nc text-center"></td>
+                                <td class="MR_7_2_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.3</strong></td>
+                                <td class="MR_7_3_conforme text-center"></td>
+                                <td class="MR_7_3_nc text-center"></td>
+                                <td class="MR_7_3_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.4</strong></td>
+                                <td class="MR_7_4_conforme text-center"></td>
+                                <td class="MR_7_4_nc text-center"></td>
+                                <td class="MR_7_4_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.5</strong></td>
+                                <td class="MR_7_5_conforme text-center"></td>
+                                <td class="MR_7_5_nc text-center"></td>
+                                <td class="MR_7_5_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.6</strong></td>
+                                <td class="MR_7_6_conforme text-center"></td>
+                                <td class="MR_7_6_nc text-center"></td>
+                                <td class="MR_7_6_NO text-center"></td>
+                            </tr>
+                            <tr class="small">
+                                <td><strong>MR 7.7</strong></td>
+                                <td class="MR_7_7_conforme text-center"></td>
+                                <td class="MR_7_7_nc text-center"></td>
+                                <td class="MR_7_7_NO text-center"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('js/bus/reporting/now.js') }}"></script>
+{% endblock %}

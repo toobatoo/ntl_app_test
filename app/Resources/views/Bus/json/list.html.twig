@@ -1,0 +1,62 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+
+        <div class="row col-xs-12 col-lg-12" style="margin-left:5px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Liste des fichiers JSON exportés récemment
+                        <!--<select  class="date_select" style="margin-bottom:3px;">
+                            <option value="-">Choisir une date</option>
+                            {% if listDates is defined %}
+                                {% for date in listDates %}
+                                    <option value="{{ date['date'] }}">{{ date['date'] }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>-->
+                    </div>
+
+                <div class="panel-body">
+                    <div style="width: 100% !important; overflow: scroll; height: 57vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <a href="{{path('bus_json_list_remove')}}" class="btn btn-success btn-xs">Vider la liste</a>
+                                    </td>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                
+                                {% if list_json is defined %}
+                                {% for json in list_json %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{asset('JSON/bus/emet/' ~ json)}}" download="{{json}}">
+                                            <span class="text-primary">
+                                                <span class="glyphicon glyphicon-file"></span>
+                                                {{json}}
+                                            </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+        </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+
+

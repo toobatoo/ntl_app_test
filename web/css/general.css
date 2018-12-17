@@ -1,0 +1,8 @@
+body{ padding-top: 70px; }
+.navbar-nav{padding-right: 15px;}
+#remember_me{margin-top: 0px; padding-right: -15px;}
+#remember_me_lbl{margin-left: -15px}
+.table th{text-align: center;}
+.form-window {
+    display: none;
+ }

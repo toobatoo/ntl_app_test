@@ -1,0 +1,63 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+        <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span style="font-size:1.2em;font-weight:bold;">Plannings enquêteurs </span>
+                        <div>
+                            <!--<span class="btn btn-xs btn-success" onclick="window.location.href='{{path("pa_plan_sondage_import")}}'" >-->
+                            <span class="btn btn-xs btn-success" onclick="window.location.href='javascript:history.back()'" >
+                                <span class="glyphicon glyphicon-arrow-left"></span> Retour
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="width: 100% !important; overflow: scroll; height: 57vh;">
+                        <table class="table table-condensed table-bordered"style="margin-top:4px;font-size:0.9em;">
+                            <tr>
+                                <th>Actions</th>
+                                <th nowrap>Id</th>
+                                <th nowrap>Zone</th>
+                                <th nowrap>Enquêteur</th>
+                                <th nowrap>Mois</th>
+                                <th nowrap>Date</th>
+                                <th nowrap>Plage horaire début</th>
+                                <th nowrap>Plage horaire fin</th>
+                            </tr>
+                            {% if datas is defined %}
+                                {% for data in datas %}
+                                    <tr>
+                                        <td class="text-center">
+                                            <span class="glyphicon glyphicon-trash cursor text-warning"></span>
+                                        </td>
+                                        <td>{{data['id']}}</td>
+                                        <td>{{data['zone']}}</td>
+                                        <td>{{data['enqueteur']}}</td>
+                                        <td>{{data['mois']}}</td>
+                                        <td>{{data['date']}}</td>
+                                        <td>{{data['plage_horaire_debut']}}</td>
+                                        <td>{{data['plage_horaire_fin']}}</td>
+                                 </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pa/plan_sondage/view_zone_enqueteur.js') }}"></script>
+{% endblock %}

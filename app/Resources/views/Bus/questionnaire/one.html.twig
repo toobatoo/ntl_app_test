@@ -1,0 +1,1225 @@
+{% extends 'base_bus.html.twig' %}
+
+{% block metas %}
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+{% endblock %}
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+<span class="mois">{{mois}}</span>
+
+    <div class="container content">
+
+        <span class="btn btn-xs btn-primary">
+            <span class="glyphicon glyphicon-refresh back"> <strong>Retour</strong></span>
+        </span>
+
+        <h3>Détail de la mesure <span class="id">{{form.vars.value.id}}</span></h3>
+        <h4>Date: <span class="date">{{form.vars.value.date}}</span></h4>
+        <h4>Ligne: <span class="ligne">{{form.vars.value.ligne}}</span></h4>
+
+        {% for message_save_form in app.session.flashbag.get('infos') %}
+            <div class="alert alert-info" role="alert">
+                {{ message_save_form }}
+            </div>
+        {% endfor %}
+
+            <div class="row col-xs-3 col-lg-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Photo de la ligne</div>
+                    <div class="panel-body">
+                        <img src="
+                        {% if(mois < 1) %}
+                            {{ asset("photos/bus/"~id~".jpeg") }}
+                        {% else %}
+                            {{ asset("photos/bus/"~table~"/"~id~".jpeg") }}
+                        {% endif %}
+                        " onerror="this.src = '{{ asset("images/default.png") }}'" class="img-thumbnail"/>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="row col-xs-5 col-lg-5" style="margin-left: 7px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Charger une photo</div>
+                    <div class="panel-body">
+                        <table>
+                            <form method="post" action="{{path('bus_photo_upload' )}}" enctype="multipart/form-data" >
+                                <tr>
+                                    <td><input type="file" name="img" /></td>
+                                    <input type="hidden" value="{{ id }}" name="id_questionnaire" />
+                                    <input type="hidden" value="{{ table }}" name="table" />
+                                    <input type="hidden" value="{{ mois }}" name="mois" />
+                                    <td><input type="submit" name="submit" value="Envoyer" class="btn btn-xs btn-primary " /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="button" class="btn btn-xs btn-danger" style="width:100%;margin-top:20px;" onclick="window.location.href='{{ path("bus_photo_remove_one", {"id": id, "table":table, "mois":mois}) }}'">Supprimer la photo</button>
+                                    </td>
+                                </tr>
+                            </form>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+           
+
+            {{ form_start( form ) }}
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">Informations de la mesure
+                        <!--<span style="margin-left:10px;" class="btn btn-xs btn-success json-export">Exporter JSON</span>-->
+                    </div>
+
+                    <div class="panel-body">
+                    
+                        <div>
+                        {{ form_row( form.json ) }}
+                            <span>Export JSON: </span>
+                            {% if form.vars.value.json == 0 %}
+                                  <strong><span class="text-danger json-statut" style="margin-left:10px;">Non exporté</span></strong>
+                            {% else %}
+                                  <strong><span class="text-success" style="margin-left:10px;">OK</span></strong>
+                            {% endif %}
+                            <span style="margin-left:25px;"> | </span>
+                            <span style="margin-left:25px;">
+                                <span style="display: inline-block">{{ form_row( form.ticket ) }}</span>
+                                <span> Ticket</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">Informations</div>
+
+                <div class="panel-body">
+                    
+                    <div style="width: 100% !important; height: 75vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                            <tbody>
+                                    <tr>
+                                        <td><label><em>Validation de la saisie</em></label></td>
+                                        <td>{{ form_widget(form.save, {attr: {class: 'btn btn-xs btn-primary', style: 'width:100%;'} }) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nuit</strong></td>
+                                        <td>{{ form_row( form.nuit ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Coquille</strong></td>
+                                        <td>{{ form_row( form.coquille ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Arrêt montée</strong></td>
+                                        <td>{{ form_row( form.arretMontee, {attr: {size: '50'}} ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Arrêt descente</strong></td>
+                                        <td>{{ form_row( form.arretDescente, {attr: {size: '50'}} ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Heure de début de mesure</strong></td>
+                                        <td>{{ form_row( form.dateDebutMesure ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Heure montée</strong></td>
+                                        <td>{{ form_row( form.heureMontee ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Heure descente</strong></td>
+                                        <td>{{ form_row( form.mrHDescente ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Heure de fin de mesure</strong></td>
+                                        <td>{{ form_row( form.dateFinMesure ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Direction</strong></td>
+                                        <td>{{ form_row( form.direction, {attr: {size: '50'}} ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>BIV indice</strong></td>
+                                        <td>{{ form_row( form.bivIndice, {attr: {class: 'biv_indice_value' } }) }}</td>
+                                        <td>
+                                            <select class="biv_indice_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Présent">Présent</option>
+                                                <option value="Eteint">Eteint</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Non conforme">Non conforme</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="">Champs vide</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Détail</strong></td>
+                                        <td>{{ form_row( form.bivIndiceDetail ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>BIV direction</strong></td>
+                                        <td>{{ form_row( form.bivDirection, {attr: {class: 'biv_direction_value' } } ) }}</td>
+                                        <td>
+                                            <select class="biv_direction_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Présent">Présent</option>
+                                                <option value="Eteint">Eteint</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Non conforme">Non conforme</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="">Champs vide</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Détail</strong></td>
+                                        <td>{{ form_row( form.bivDirectionDetail ) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>BIV attente</strong></td>
+                                        <td>{{ form_row( form.bivAttente, {attr: {class: 'biv_attente_value' } } ) }}</td>
+                                        <td>
+                                            <select class="biv_attente_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Présent">Présent</option>
+                                                <option value="Eteint">Eteint</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Non conforme">Non conforme</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="">Champs vide</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Détail</strong></td>
+                                        <td>{{ form_row( form.bivAttenteDetail ) }}</td>
+                                    </tr>
+                                    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div><!-- row navigation-->
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">2. Etat et propreté extérieure des autobus</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 23vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>2.1 Carrosserie sale</strong></td>
+                                        <td>{{ form_row( form.Q21, {attr: {class: 'Q21_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q21_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2.2 Vitres sales</strong></td>
+                                        <td>{{ form_row( form.Q22, {attr: {class: 'Q22_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q22_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2.3 Arrière du bus sale</strong></td>
+                                        <td>{{ form_row( form.Q23, {attr: {class: 'Q23_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q23_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2.4 Elément de carrosserie abîmé (rouillé, enfoncé, déformé)</strong></td>
+                                        <td>{{ form_row( form.Q24, {attr: {class: 'Q24_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q24_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">3. Informations extérieures autobus</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 38vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>3.1 Indice de ligne frontal ou affiche/panneaux</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q31, {attr: {class: 'Q31_value' } } ) }}
+                                            {{ form_row( form.Q31Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q31_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>3.2 Indicateur directionnel frontal ou affiche/panneaux</strong></td>
+                                        <td>
+                                                {{ form_row( form.Q32, {attr: {class: 'Q32_value' } } ) }}
+                                                {{ form_row( form.Q32Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                            </td>
+                                        <td>
+                                            <select class="Q32_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>3.3 Indice de ligne latéral</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q33, {attr: {class: 'Q33_value' } } ) }}
+                                            {{ form_row( form.Q33Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q33_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>3.4 Information latérale</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q34, {attr: {class: 'Q34_value' } } ) }}
+                                            {{ form_row( form.Q34Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q34_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">4. Disponibilités des équipements embarqués</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 29vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>4.1 Demande d'arrêt</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q41, {attr: {class: 'Q41_value' } } ) }}
+                                            {{ form_row( form.Q41Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q41_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Partiellement">Partiellement</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>4.2 Valideurs titres de transports</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q42, {attr: {class: 'Q42_value' } } ) }}
+                                            {{ form_row( form.Q42Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q42_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Partiellement">Partiellement</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>4.3 Bouton d'ouverture des portes (self service)</strong></td>
+                                        <td>
+                                            {{ form_row( form.Q43, {attr: {class: 'Q43_value' } } ) }}
+                                            {{ form_row( form.Q43Detail, {attr: {placeholder: 'Détail' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="Q43_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Partiellement">Partiellement</option>
+                                                <option value="Indisponible">Indisponible</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">5. Informations extérieures autobus</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 45vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>5.1 Un plan de ligne</strong></td>
+                                        <td>{{ form_row( form.Q51, {attr: {class: 'Q51_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q51_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.2 Tarifs</strong></td>
+                                        <td>{{ form_row( form.Q52, {attr: {class: 'Q52_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q52_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Périmé">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.3 Réglementation</strong></td>
+                                        <td>{{ form_row( form.Q53, {attr: {class: 'Q53_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q53_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.4 Correspondance avec les modes ferrés</strong></td>
+                                        <td>{{ form_row( form.Q54, {attr: {class: 'Q54_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q54_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Périmé">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.5 N° de téléphone 3424</strong></td>
+                                        <td>{{ form_row( form.Q55, {attr: {class: 'Q55_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q55_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.6 Site www.ratp.fr</strong></td>
+                                        <td>{{ form_row( form.Q56, {attr: {class: 'Q56_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q56_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.7 Annonce visuelle des arrêts</strong></td>
+                                        <td>{{ form_row( form.Q57, {attr: {class: 'Q57_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q57_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.8 Annonce sonore des arrêts</strong></td>
+                                        <td>{{ form_row( form.Q58, {attr: {class: 'Q58_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q58_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="Absent">Absent</option>
+                                                <option value="Illisible">Illisible</option>
+                                                <option value="Erroné">Erroné</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">6. Etat et propreté intérieure des autobus</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 79vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>6.1 Sièges dégradés (cassés, lacérés)</strong></td>
+                                        <td>{{ form_row( form.Q61, {attr: {class: 'Q61_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q61_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.2 Dispositif de maintien (barres et mains courantes) abîmé</strong></td>
+                                        <td>{{ form_row( form.Q62, {attr: {class: 'Q62_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q62_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.3 Revêtement de sol ondulant ou baillant</strong></td>
+                                        <td>{{ form_row( form.Q63, {attr: {class: 'Q63_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q63_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.4 Mauvais fonctionnement des portes</strong></td>
+                                        <td>{{ form_row( form.Q64, {attr: {class: 'Q64_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q64_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.5 Sièges tâchés (traces pieds, chewing gum)</strong></td>
+                                        <td>{{ form_row( form.Q65, {attr: {class: 'Q65_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q65_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.6 Sol gras, glissant, collant</strong></td>
+                                        <td>{{ form_row( form.Q66, {attr: {class: 'Q66_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q66_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.7 Présence détritus (détritus, canettes, mégots, chewing gum ...)</strong></td>
+                                        <td>{{ form_row( form.Q67, {attr: {class: 'Q67_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q67_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.8 Présence détritus organiques (excrément, vomissure)</strong></td>
+                                        <td>{{ form_row( form.Q68, {attr: {class: 'Q68_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q68_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.9 Panneaux intérieurs tâchés, déchirés</strong></td>
+                                        <td>{{ form_row( form.Q69, {attr: {class: 'Q69_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q69_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.10 Panneaux intérieurs tagés</strong></td>
+                                        <td>{{ form_row( form.Q610, {attr: {class: 'Q610_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q610_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.11 Colonnette ou mains courrantes sales</strong></td>
+                                        <td>{{ form_row( form.Q611, {attr: {class: 'Q611_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q611_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.12 Eclairage intérieur insuffisant</strong></td>
+                                        <td>{{ form_row( form.Q612, {attr: {class: 'Q612_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q612_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.13 Sièges usés, lustrés, noircis</strong></td>
+                                        <td>{{ form_row( form.Q613, {attr: {class: 'Q613_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q613_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.14 Sièges tagés</strong></td>
+                                        <td>{{ form_row( form.Q614, {attr: {class: 'Q614_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q614_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">7. Odeurs</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 6vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>7.1 Présence d'odeurs</strong></td>
+                                        <td>{{ form_row( form.Q71, {attr: {class: 'Q71_value' } } ) }}</td>
+                                        <td>
+                                            <select class="Q71_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">2. Arrêt au trottoir à la montée</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 20vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>2.1 Distance au trottoir non conforme</strong></td>
+                                        <td>{{ form_row( form.MR21, {attr: {class: 'MR21_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR21_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2.1 Détail</strong></td>
+                                        <td>
+                                            {{ form_row( form.MR21Detail, {attr: {class: 'MR21Detail_value' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="MR21Detail_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                                <option value="non">Aucune gêne</option>
+                                                <option value="Travaux">Travaux</option>
+                                                <option value="Stationnement">Stationnement</option>
+                                                <option value="Autre gêne">Autre gêne</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>GIPA</strong></td>
+                                        <td>
+                                            <!--<input type='text' class='gipa' />-->
+                                            {{ form_row( form.gipaMontee, {attr: {class: 'gipaMontee'}} ) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">2. Arrêt au trottoir à la descente</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 20vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>2.1 Distance au trottoir non conforme</strong></td>
+                                        <td>{{ form_row( form.MR21Bis, {attr: {class: 'MR21Bis_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR21Bis_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2.1 Détail</strong></td>
+                                        <td>
+                                            {{ form_row( form.MR21DetailBis, {attr: {class: 'MR21DetailBis_value' } } ) }}
+                                        </td>
+                                        <td>
+                                            <select class="MR21DetailBis_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                                <option value="non">Aucune gêne</option>
+                                                <option value="Travaux">Travaux</option>
+                                                <option value="Stationnement">Stationnement</option>
+                                                <option value="Autre gêne">Autre gêne</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>GIPA</strong></td>
+                                        <td>
+                                            <!--<input type='text' class='gipa' />-->
+                                            {{ form_row( form.gipaDescente, {attr: {class: 'gipaDescente'}} ) }}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">3. Regard voyageur</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 10vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>3.1 Ne regarde pas délibérément</strong></td>
+                                        <td>{{ form_row( form.MR31, {attr: {class: 'MR31_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR31_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>3.2 Parle à une connaissance</strong></td>
+                                        <td>{{ form_row( form.MR32, {attr: {class: 'MR32_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR32_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">4. Vente de titres de transport</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 10vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>4.1 Le machiniste est démuni de monnaie</strong></td>
+                                        <td>{{ form_row( form.MR41, {attr: {class: 'MR41_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR41_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>4.2 Le machiniste est démuni de tickets</strong></td>
+                                        <td>{{ form_row( form.MR42, {attr: {class: 'MR42_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR42_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">5. Tenue conforme</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 27vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>5.1 Veste non conforme</strong></td>
+                                        <td>{{ form_row( form.MR51, {attr: {class: 'MR51_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR51_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.2 Chemise non conforme</strong></td>
+                                        <td>{{ form_row( form.MR52, {attr: {class: 'MR52_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR52_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.3 Cravate non conforme</strong></td>
+                                        <td>{{ form_row( form.MR53, {attr: {class: 'MR53_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR53_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.4 Pantalon non conforme</strong></td>
+                                        <td>{{ form_row( form.MR54, {attr: {class: 'MR54_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR54_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>5.5 Badge non conforme</strong></td>
+                                        <td>{{ form_row( form.MR55, {attr: {class: 'MR55_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR55_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">6. Présentation soignée</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 22vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>6.1 Les vêtements sont sales</strong></td>
+                                        <td>{{ form_row( form.MR61, {attr: {class: 'MR61_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR61_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.2 Les vêtements sont fripés</strong></td>
+                                        <td>{{ form_row( form.MR62, {attr: {class: 'MR62_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR62_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.3 Le machiniste fume</strong></td>
+                                        <td>{{ form_row( form.MR63, {attr: {class: 'MR63_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR63_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>6.4 Le machiniste a au moins un pied sur le tableau de bord</strong></td>
+                                        <td>{{ form_row( form.MR64, {attr: {class: 'MR64_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR64_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">7. Confort de conduite</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 39vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>7.1 La vitesse est trop rapide</strong></td>
+                                        <td>{{ form_row( form.MR71, {attr: {class: 'MR71_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR71_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.2 La conduite est saccadée</strong></td>
+                                        <td>{{ form_row( form.MR72, {attr: {class: 'MR72_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR72_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.3 Non respect de feu rouge</strong></td>
+                                        <td>{{ form_row( form.MR73, {attr: {class: 'MR73_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR73_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.4 non respect de stop</strong></td>
+                                        <td>{{ form_row( form.MR74, {attr: {class: 'MR74_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR74_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.5 Refus de priorité</strong></td>
+                                        <td>{{ form_row( form.MR75, {attr: {class: 'MR75_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR75_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.6 Port d'écouteurs, oreillettes</strong></td>
+                                        <td>{{ form_row( form.MR76, {attr: {class: 'MR76_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR76_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>7.7 Utilisation manuelle de portable et produits dérivés</strong></td>
+                                        <td>{{ form_row( form.MR77, {attr: {class: 'MR77_value' } } ) }}</td>
+                                        <td>
+                                            <select class="MR77_select">
+                                                <option value="0">Initialiser à</option>
+                                                <option value="Oui">Oui</option>
+                                                <option value="non">non</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-info">
+                    <div class="panel-heading">Observations</div>
+
+                    <div class="panel-body">
+                    
+                        <div style="width: 100% !important; height: 10vh;"/>
+                            <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">{{ form_row( form.obs, {attr: {class: 'obs', cols: '100' } } ) }}</td>
+                                    </tr>
+                                    
+                                    {{ form_row(form.valid, {attr: {value: '1'} }) }}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {{ form_row(form._token) }}
+        {{ form_end( form ) }}
+    </div><!-- container navigation-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bus/fiches/one.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+        <div class="row content">
+            
+            <div class="row col-xs-12 col-lg-12" style="margin-left: 7px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                            Evolutions
+                            <select>
+                                
+                                {% set year = "now"|date("Y") %}
+
+                                <option value="{{ year }}">{{ year }}</option>
+                                
+                                {% if year > 2016 %}
+                                    {% for i in 2016..year - 1 %}
+                                        {% set year = year - 1 %}
+                                        <option value="{{year}}">{{ year }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                                
+
+                            </select>
+                    </div>
+                    <div class="panel-body">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td>
+                                    <div id="container" 
+                                        style="width: 100%; margin: 0 auto">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('js/bus/reporting/year.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}RATP - Noctilien{% endblock %}</title>
+        {% block metas %}{% endblock %}
+        
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/dist/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap-submenu/dist/css/bootstrap-submenu.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/general.css') }}">
+        {% endblock %}
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div class="text-center loader"></div>
+        {% block body %}
+            {% block menu %}
+                <div class="container navigation">
+                    <div class="row navigation">
+                        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                            <div class="navabar-header">
+                                <a class="navbar-brand" href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span> Noctilien</a>
+                            </div>
+
+                            <div class="navbar-collapse collapse navbar-left">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown">
+                                        <a href="" tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false">
+                                            <span class="text-primary">Suivi indicateurs</span> <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-submenu">
+                                                <a tabindex="0" href="">Enquêtes prévues/réalisées</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a tabindex="0" href="{{ path('pa_prevu_realise') }}">PA</a></li>
+                                                    <li><a tabindex="0" href="{{ path('bus_prevu_realise') }}">BUS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="">Pénalités</a></li>
+                                            <li><a href="">Ratio Dysfonctionnements</a></li>
+                                            <li class="divider"></li>
+                                            <li class="dropdown-submenu">
+                                                <a tabindex="0" href="">Typologie dysfonctionnements</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a tabindex="0" href="">Moyenne annuelle N-1 et N</a></li>
+                                                    <li><a tabindex="0" href="">Quantités mensuelles</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li><a href="">Formation continue</a></li>
+                                            <li><a href="">Restitution</a></li>
+                                            <li><a href="">QSE</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown">
+                                        <a href="" tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false"><span class="text-primary">Suivi mesures</span> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{ path('bus_questionnaire_all', { 'mois': 0 }) }}">Mesures</a></li>
+                                            <li><a href="{{path('app_ticket')}}">Tickets</a></li>
+                                            <li><a href="{{path('app_dysfonctionnement')}}">Dysfonctionnements</a></li>
+                                            <li><a href="">Main courante/retard</a></li>
+                                            <li><a href="">RHA</a></li>
+                                            <li><a href="">Accompagnement formation</a></li>
+                                            <li class="dropdown-submenu">
+                                                <a tabindex="0" href="">Plan de sondage</a>
+                                                <ul class="dropdown-menu">
+                                                    <li class="planSondage-export cursor"><a tabindex="0" >PA</a></li>
+                                                    <li class="bus_plan_sondage_export cursor"><a tabindex="0" href="">BUS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="">PAO/PAS</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="text-primary">Suivi marché</span> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{ path('client_compte_rendu') }}">Compte rendu</a></li>
+                                            <li><a href="">Carte d'accès</a></li>
+                                            <li><a href="{{ path('app_echange') }}">Echange</a></li>
+                                            <li><a href="{{path('client_matricule')}}">Matricules</a></li>
+                                            <li><a href="{{path('client_plan_action')}}">Plan d'action</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="navbar-collapse collapse navbar-right">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plan de sondage <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            {% if app.user.hasRole('ROLE_ADMIN') %}
+                                                <li><a href="{{path('bus_plan_sondage_import')}}">Importer</a></li>
+                                            {% endif %}
+                                            <li class="bus_plan_sondage_export"><a href="">Exporter</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fiches <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            {% if app.user.hasRole('ROLE_ADMIN') %}
+											    <li><a href="{{ path('bus_questionnaire_all', { 'mois': 0 }) }}">Consultation des mesures</a></li>
+                                                <li><a href="{{ path('bus_questionnaire_import') }}">Importation des mesures</a></li>
+                                                <li><a href="{{path('bus_json_home')}}">Exports JSON</a></li>
+                                            {% endif %}
+											<li><a href="{{path('bus_json_re_export_home')}}">Re-exporter un JSON</a></li>
+                                            <li><a href="{{path('bus_json_list')}}">Liste des JSON récemment transmis</a></li>
+                                        </ul>
+                                    </li>
+                                    {% if app.user.hasRole('ROLE_ADMIN') %}
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{{ path('bus_database') }}">Base de données</a></li>
+                                                <li class="export-referentiel cursor"><a>Référentiel client</a></li>
+                                                <li class="reset-mesures cursor"><a href="{{path('bus_mesure_reset')}}">Re-initialiser les mesures</a></li>
+                                                <!--<li><a href="{{ path('bus_json') }}">Générer JSON</a></li>-->
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    <!-- <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reporting <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{ path('bus_reporting_year') }}">NC sur l'année</a></li>
+                                            <li><a href="{{ path('bus_reporting_now') }}">NC de la vague en cours</a></li>
+                                            <li><a href="{{ path('bus_reporting_compare_month') }}">Comparaison entre deux mois</a></li>
+                                        </ul>
+                                    </li>-->
+                                </ul>
+                            </div>
+                        </nav>
+                    </div><!-- row navigation-->
+        <div class="text-right">{{ app.user.username }} | <a href="{{ path('fos_user_security_logout') }}" >Déconnexion</a></div>
+    </div><!-- container navigation-->
+            {% endblock %}
+        {% endblock %}
+        
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('jquery/dist/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bootstrap-submenu/dist/js/bootstrap-submenu.min.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <script type="text/javascript" src="{{ asset('js/general.js') }}"></script>
+        {% endblock %}
+
+    </body>
+</html>

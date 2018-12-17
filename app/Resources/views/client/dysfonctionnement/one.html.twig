@@ -1,0 +1,126 @@
+{% extends 'base_client.html.twig' %}
+
+{% block body %}
+
+<span class="year_to_show">{{year_to_show}}</span>
+<span class="month_to_show">{{month_to_show}}</span>
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+<span class="id">{{ dysfonctionnement[0]['id'] }}</span>
+
+    <div class="container content">
+        <div class="row content">
+            <div style="width: 100% !important; overflow: scroll; height: 80vh;">
+            <table>
+            <tr>
+               <td style="padding-left:8px;">
+                    <span class="btn btn-xs btn-default btn-back">
+                        <span class="glyphicon glyphicon-arrow-left"> Retour</span>
+                    </span>
+                    <span class="btn btn-xs btn-primary save-client">
+                        <span>Enregistrer</span>
+                    </span>
+                </td>
+            </tr>
+            </table>
+
+            <table class="table" style="margin-top:20px;">
+            
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Matricule</strong></td>
+                    <td>
+                        <input type="text" class="matricule" value="{{ dysfonctionnement[0]['matricule'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Modification</strong></td>
+                    <td>
+                        <input type="text" class="modification" value="{{ dysfonctionnement[0]['modification'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Date</strong></td>
+                    <td>
+                        <input type="text" class="date" value="{{ dysfonctionnement[0]['date'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Ligne</strong></td>
+                    <td>
+                        <input type="text" class="ligne" value="{{ dysfonctionnement[0]['ligne'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Typologie</strong></td>
+                    <td>
+                        <input type="text" class="typologie" value="{{ dysfonctionnement[0]['typologie'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Signalement</strong></td>
+                    <td>
+                        <textarea rows="4" class="signalement" cols="50">{{ dysfonctionnement[0]['signalement'] }}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap><strong>Réponse / action OT</strong></td>
+                    <td>
+                        <textarea rows="4" cols="50" class="reponse_ot">{{ dysfonctionnement[0]['reponse_ot'] }}</textarea>
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Min</strong></td>
+                    <td>
+                        <input type="text" class="min" value="{{ dysfonctionnement[0]['min'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Maj</strong></td>
+                    <td>
+                        <input type="text" class="maj" value="{{ dysfonctionnement[0]['maj'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>PV décalé</strong></td>
+                    <td>
+                        <input type="text" class="pv_decale" value="{{ dysfonctionnement[0]['pv_decale'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Annulation grille</strong></td>
+                    <td>
+                        <input type="text" class="annulation_grille" value="{{ dysfonctionnement[0]['annulation_grille'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Annulation PV</strong></td>
+                    <td>
+                        <input type="text" class="annulation_pv" value="{{ dysfonctionnement[0]['annulation_pv'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Fact min</strong></td>
+                    <td>
+                        <input type="text" class="fact_min" value="{{ dysfonctionnement[0]['fact_min'] }}" />
+                    </td>
+                </tr>
+                <tr class="alert alert-info" role="alert">
+                    <td nowrap><strong>Fact maj</td>
+                    <td>
+                        <input type="text" class="fact_maj" value="{{ dysfonctionnement[0]['fact_maj'] }}" />
+                    </td>
+                </tr>
+                
+            </table>
+            </div>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('js/client/dysfonctionnement_one.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,358 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+<span class="mois_info">{{mois}}</span>
+<span class="table_info">{{table}}</span>
+
+    <div class="container content">
+
+        {% if( mois < 1 ) %}
+            <h3>Consultation de l'ensemble des fiches saisies</h3>
+        {% else %}
+            <h3>Historique de {{ table|replace({ ("_"): "/" }) }}</h3>
+        {% endif %}
+
+            
+            <div class="row col-xs-3 col-lg-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Filtre de recherche
+                    </div>
+                    <div class="panel-body">
+                        <table style="width:100%;height:100%;">
+                            <tr>
+                                <td>
+                                    <select class="enq_select" style="width:100%!important;height:100%!important;">
+                                        <option value="-">Enquêteur</option>
+                                        {% for enqueteur in list_enqueteurs %}
+                                            <option value="{{ enqueteur['enq'] }}">{{ enqueteur['enq'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="ligne_select" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <option value="-">Ligne</option>
+                                        {% for ligne in list_lignes %}
+                                            <option value="{{ ligne['ligne'] }}">{{ ligne['ligne'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="date_select" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <option value="-">Date</option>
+                                        {% for date in list_dates %}
+                                            <option value="{{ date['date'] }}">{{ date['date'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">Situation fiches</div>
+                    <div class="panel-body">
+                        
+                        <div id="container" style="min-width: 210px; max-height:260px; heigth:230px;max-width: 300px;margin:0 auto;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row col-xs-9 col-lg-9" style="margin-left:5px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Liste des questionnaires
+                        <select style="margin-left:20px;" class="history">
+                            <option>Historique</option>
+                            <option value="1">M -1</option>
+                            <option value="2">M -2</option>
+                            <option value="3">M -3</option>
+                            <option disabled>--------------</option>
+                            <option value="0">M</option>
+                        </select>
+                        {% if app.user.hasRole('ROLE_ADMIN') %}
+                            <span> | </span>
+                                <sapn class="btn btn-xs btn-success export" >Exporter</span>
+                        {% endif %}
+                    </div>
+
+                <div class="panel-body">
+                    
+                    <div style="width: 100% !important; overflow: scroll; height: 57vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+
+                        <thead>
+                            <tr>
+                                {% if app.user.hasRole('ROLE_ADMIN') %}
+                                    <th>Actions</th>
+                                {% endif %}
+                                <th>Photos</th>
+                                <th>Validée</th>
+                                <th>Json</th>
+                                <th>Date JSON</th>
+                                <th>Grille</th>
+                                <th>Enquêteur</th>
+                                <th style="min-width:135px;">Début mesure</th>
+                                <th style="min-width:135px;">Fin mesure</th>
+                                <th>Date</th>
+                                <th>Nuit</th>
+                                <th>Ligne</th>
+                                <th>Coquille</th>
+                                <th>Arrêt montée</th>
+                                <th>Arrêt descente</th>
+                                <th>Heure montée</th>
+                                <th>Heure Descente</th>
+                                <th>Direction</th>
+                                <th>BIV indice</th>
+                                <th>Détail</th>
+                                <th>BIV direction</th>
+                                <th>Détail</th>
+                                <th>BIV attente</th>
+                                <th>Détail</th>
+                                <th style="min-width:100px;">Arrêt trottoir montée</th>
+                                <th>Détail</th>
+                                <th style="min-width:100px;">Arrêt trottoir descente</th>
+                                <th>Détail</th>
+                                <th style="min-width:50px;">Q 2.1</th>
+                                <th style="min-width:50px;">Q 2.2</th>
+                                <th style="min-width:50px;">Q 2.3</th>
+                                <th style="min-width:50px;">Q 2.4</th>
+                                <th>Q 3.1</th>
+                                <th>Détail</th>
+                                <th>Q 3.2</th>
+                                <th>Détail</th>
+                                <th>Q 3.3</th>
+                                <th>Détail</th>
+                                <th>Q 3.4</th>
+                                <th>Détail</th>
+                                <th style="min-width:50px;">Q 4.1</th>
+                                <th>Détail</th>
+                                <th style="min-width:50px;">Q 4.2</th>
+                                <th>Détail</th>
+                                <th style="min-width:50px;">Q 4.3</th>
+                                <th>Détail</th>
+                                <th style="min-width:50px;">Q 5.1</th>
+                                <th style="min-width:50px;">Q 5.2</th>
+                                <th style="min-width:50px;">Q 5.3</th>
+                                <th style="min-width:50px;">Q 5.4</th>
+                                <th style="min-width:50px;">Q 5.5</th>
+                                <th style="min-width:50px;">Q 5.6</th>
+                                <th style="min-width:50px;">Q 5.7</th>
+                                <th style="min-width:50px;">Q 5.8</th>
+                                <th style="min-width:50px;">Q 6.1</th>
+                                <th style="min-width:50px;">Q 6.2</th>
+                                <th style="min-width:50px;">Q 6.3</th>
+                                <th style="min-width:50px;">Q 6.4</th>
+                                <th style="min-width:50px;">Q 6.5</th>
+                                <th style="min-width:50px;">Q 6.6</th>
+                                <th style="min-width:50px;">Q 6.7</th>
+                                <th style="min-width:50px;">Q 6.8</th>
+                                <th style="min-width:50px;">Q 6.9</th>
+                                <th style="min-width:50px;">Q 6.10</th>
+                                <th style="min-width:50px;">Q 6.11</th>
+                                <th style="min-width:50px;">Q 6.12</th>
+                                <th style="min-width:50px;">Q 6.13</th>
+                                <th style="min-width:50px;">Q 6.14</th>
+                                <th style="min-width:50px;">Q 7.1</th>
+                                <th style="min-width:60px;">MR 3.1</th>
+                                <th style="min-width:60px;">MR 3.2</th>
+                                <th style="min-width:60px;">MR 4.1</th>
+                                <th style="min-width:60px;">MR 4.2</th>
+                                <th style="min-width:60px;">MR 5.1</th>
+                                <th style="min-width:60px;">MR 5.2</th>
+                                <th style="min-width:60px;">MR 5.3</th>
+                                <th style="min-width:60px;">MR 5.4</th>
+                                <th style="min-width:60px;">MR 5.5</th>
+                                <th style="min-width:60px;">MR 6.1</th>
+                                <th style="min-width:60px;">MR 6.2</th>
+                                <th style="min-width:60px;">MR 6.3</th>
+                                <th style="min-width:60px;">MR 6.4</th>
+                                <th style="min-width:60px;">MR 7.1</th>
+                                <th style="min-width:60px;">MR 7.2</th>
+                                <th style="min-width:60px;">MR 7.3</th>
+                                <th style="min-width:60px;">MR 7.4</th>
+                                <th style="min-width:60px;">MR 7.5</th>
+                                <th style="min-width:60px;">MR 7.6</th>
+                                <th style="min-width:60px;">MR 7.7</th>
+                                <th style="min-width:60px;">Observations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for questionnaire in questionnaires %}
+                                <tr class="valid_{{ questionnaire.getValid() }}">
+
+                                {% if app.user.hasRole('ROLE_ADMIN') %}
+
+                                    <td class="text-center">
+                                        <a href="{{ path('bus_questionnaire_remove_id', {id: questionnaire.getId()}) }}" >
+                                            <span class="glyphicon glyphicon-trash text-warning cursor"></span>
+                                        </a>
+                                           <span style="color:white;">  . . </span> 
+                                        <a href="{{ path('bus_questionnaire_one', {id: questionnaire.getId(), table: table, mois: mois}) }}" >
+                                            <span class="glyphicon glyphicon-pencil text-primary cursor"></span>
+                                        </a>
+                                    </td>
+                                    
+                                {% endif %}
+
+                                    <td style="max-width:40px;">
+                                        <a href="
+                                        {% if(mois < 1) %}
+                                                {{ asset("photos/bus/"~questionnaire.getId() ~".jpeg") }}
+                                        {% else %}
+                                                {{ asset("photos/bus/"~table~"/"~questionnaire.getId() ~".jpeg") }}
+                                        {% endif %}
+                                        " target="_blank">
+                                            <img src="
+                                            {% if(mois < 1) %}
+                                                {{ asset("photos/bus/"~questionnaire.getId() ~".jpeg") }}
+                                            {% else %}
+                                                {{ asset("photos/bus/"~table~"/"~questionnaire.getId() ~".jpeg") }}
+                                            {% endif %}
+                                            " onerror="this.src = '{{ asset("images/default.png") }}'" class="img-thumbnail"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        {% if questionnaire.getValid() == "1" %}
+                                            <span style="color:#9932CC;" class="glyphicon glyphicon-minus"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if questionnaire.getJson() == 0 %}
+                                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok text-success"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                    {% if questionnaire.getGeneratedDate() != '' %}
+                                    {% if questionnaire.getGeneratedDate() != 0 %}
+                                        {% set whole_date_time = questionnaire.getGeneratedDate()|split(' ') %}
+                                        {% set whole_date_split = whole_date_time[0]|split('-') %}
+                                        {% set time = whole_date_time[1] %}
+                                        {% set date = whole_date_split[2]~'/'~whole_date_split[1]~'/'~whole_date_split[0] %}
+                                            {{ date~' '~time }}
+                                    {% endif %}
+                                    {% endif %}
+                                    </td>
+                                    <td>{{ questionnaire.getGrille() }}</td>
+                                    <td>{{ questionnaire.getEnq() }}</td>
+                                    <td>{{ questionnaire.getDateDebutMesure() }}</td>
+                                    <td>{{ questionnaire.getDateFinMesure() }}</td>
+                                    <td>{{ questionnaire.getDate() }}</td>
+                                    <td>{{ questionnaire.getNuit() }}</td>
+                                    <td>{{ questionnaire.getLigne() }}</td>
+                                    <td>{{ questionnaire.getCoquille() }}</td>
+                                    <td>{{ questionnaire.getArretMontee() }}</td>
+                                    <td>{{ questionnaire.getArretDescente() }}</td>
+                                    <td>{{ questionnaire.getHeureMontee() }}</td>
+                                    <td>{{ questionnaire.getMrHDescente() }}</td>
+                                    <td>{{ questionnaire.getDirection() }}</td>
+                                    <td>{{ questionnaire.getBivIndice() }}</td>
+                                    <td>{{ questionnaire.getBivIndiceDetail() }}</td>
+                                    <td>{{ questionnaire.getBivDirection() }}</td>
+                                    <td>{{ questionnaire.getBivDirectionDetail() }}</td>
+                                    <td>{{ questionnaire.getBivAttente() }}</td>
+                                    <td>{{ questionnaire.getBivAttenteDetail() }}</td>
+                                    <td>{{ questionnaire.getMr21() }}</td>
+                                    <td>{{ questionnaire.getMr21Detail() }}</td>
+                                    <td>{{ questionnaire.getMr21Bis() }}</td>
+                                    <td>{{ questionnaire.getMr21DetailBis() }}</td>
+                                    <td>{{ questionnaire.getQ21() }}</td>
+                                    <td>{{ questionnaire.getQ22() }}</td>
+                                    <td>{{ questionnaire.getQ23() }}</td>
+                                    <td>{{ questionnaire.getQ24() }}</td>
+                                    <td>{{ questionnaire.getQ31() }}</td>
+                                    <td>{{ questionnaire.getQ31Detail() }}</td>
+                                    <td>{{ questionnaire.getQ32() }}</td>
+                                    <td>{{ questionnaire.getQ32Detail() }}</td>
+                                    <td>{{ questionnaire.getQ33() }}</td>
+                                    <td>{{ questionnaire.getQ33Detail() }}</td>
+                                    <td>{{ questionnaire.getQ34() }}</td>
+                                    <td>{{ questionnaire.getQ34Detail() }}</td>
+                                    <td>{{ questionnaire.getQ41() }}</td>
+                                    <td>{{ questionnaire.getQ41Detail() }}</td>
+                                    <td>{{ questionnaire.getQ42() }}</td>
+                                    <td>{{ questionnaire.getQ42Detail() }}</td>
+                                    <td>{{ questionnaire.getQ43() }}</td>
+                                    <td>{{ questionnaire.getQ43Detail() }}</td>
+                                    <td>{{ questionnaire.getQ51() }}</td>
+                                    <td>{{ questionnaire.getQ52() }}</td>
+                                    <td>{{ questionnaire.getQ53() }}</td>
+                                    <td>{{ questionnaire.getQ54() }}</td>
+                                    <td>{{ questionnaire.getQ55() }}</td>
+                                    <td>{{ questionnaire.getQ56() }}</td>
+                                    <td>{{ questionnaire.getQ57() }}</td>
+                                    <td>{{ questionnaire.getQ58() }}</td>
+                                    <td>{{ questionnaire.getQ61() }}</td>
+                                    <td>{{ questionnaire.getQ62() }}</td>
+                                    <td>{{ questionnaire.getQ63() }}</td>
+                                    <td>{{ questionnaire.getQ64() }}</td>
+                                    <td>{{ questionnaire.getQ65() }}</td>
+                                    <td>{{ questionnaire.getQ66() }}</td>
+                                    <td>{{ questionnaire.getQ67() }}</td>
+                                    <td>{{ questionnaire.getQ68() }}</td>
+                                    <td>{{ questionnaire.getQ69() }}</td>
+                                    <td>{{ questionnaire.getQ610() }}</td>
+                                    <td>{{ questionnaire.getQ611() }}</td>
+                                    <td>{{ questionnaire.getQ612() }}</td>
+                                    <td>{{ questionnaire.getQ613() }}</td>
+                                    <td>{{ questionnaire.getQ614() }}</td>
+                                    <td>{{ questionnaire.getQ71() }}</td>
+                                    <td>{{ questionnaire.getMr31() }}</td>
+                                    <td>{{ questionnaire.getMr32() }}</td>
+                                    <td>{{ questionnaire.getMr41() }}</td>
+                                    <td>{{ questionnaire.getMr42() }}</td>
+                                    <td>{{ questionnaire.getMr51() }}</td>
+                                    <td>{{ questionnaire.getMr52() }}</td>
+                                    <td>{{ questionnaire.getMr53() }}</td>
+                                    <td>{{ questionnaire.getMr54() }}</td>
+                                    <td>{{ questionnaire.getMr55() }}</td>
+                                    <td>{{ questionnaire.getMr61() }}</td>
+                                    <td>{{ questionnaire.getMr62() }}</td>
+                                    <td>{{ questionnaire.getMr63() }}</td>
+                                    <td>{{ questionnaire.getMr64() }}</td>
+                                    <td>{{ questionnaire.getMr71() }}</td>
+                                    <td>{{ questionnaire.getMr72() }}</td>
+                                    <td>{{ questionnaire.getMr73() }}</td>
+                                    <td>{{ questionnaire.getMr74() }}</td>
+                                    <td>{{ questionnaire.getMr75() }}</td>
+                                    <td>{{ questionnaire.getMr76() }}</td>
+                                    <td>{{ questionnaire.getMr77() }}</td>
+                                    <td>{{ questionnaire.getObs() }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            <div style="margin-left:15px;">
+                <input type="checkbox" value="Save" checked class="saisies_saved"/> Saisies enregistrées
+                <input type="checkbox" value="toUpdate" checked class="saisies_to_pdate"/> Saisies à valider
+            </div>
+
+        </div><!-- row navigation-->
+        
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('js/bus/fiches/all.js') }}"></script>
+{% endblock %}

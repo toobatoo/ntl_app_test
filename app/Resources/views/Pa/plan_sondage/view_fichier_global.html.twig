@@ -1,0 +1,86 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+        <div class="row col-xs-12 col-lg-12" >
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span style="font-size:1.2em;font-weight:bold;">Extrait du plan de sondage </span>
+                             <span style="font-size:1em;"> 
+                                Cet extrait vous sert à controller la validité des colonnes insérées.
+                            </span>
+                        <div>
+                            <span class="btn btn-xs btn-success" onclick="window.location.href='{{path("pa_plan_sondage_import")}}'" >
+                                <span class="glyphicon glyphicon-arrow-left"></span> Retour
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="width: 100% !important; overflow: scroll; height: 57vh;">
+                        <table class="table table-condensed table-bordered"style="margin-top:4px;font-size:0.9em;">
+                            <tr>
+                                <th nowrap>Id</th>
+                                <th nowrap>Ligne numéro</th>
+                                <th nowrap>Ligne ID</th>
+                                <th nowrap>Libellé commercial</th>
+                                <th nowrap>Itinéraire</th>
+                                <th nowrap>Zone</th>
+                                <th nowrap>Mois</th>
+                                <th nowrap>Ordre</th>
+                                <th nowrap>Numéro arrêt</th>
+                                <th nowrap>Sens</th>
+                                <th nowrap>Nom arrêt</th>
+                                <th nowrap>Destination</th>
+                                <th nowrap>N° emplacement</th>
+                                <th nowrap>N° voie</th>
+                                <th nowrap>Type voie</th>
+                                <th nowrap>Nom voie</th>
+                                <th nowrap>N° INSEE</th>
+                                <th nowrap>Code postal</th>
+                                <th nowrap>Commune</th>
+                                <th nowrap>Localisation</th>
+                                <th nowrap>Date importation</th>
+                            </tr>
+                            {% if datas is defined %}
+                                {% for data in datas %}
+                                    <tr>
+                                        <td>{{data['id']}}</td>
+                                        <td>{{data['ligne_numero']}}</td>
+                                        <td>{{data['ligne_id']}}</td>
+                                        <td>{{data['libelle_commercial']}}</td>
+                                        <td>{{data['itineraire']}}</td>
+                                        <td>{{data['zone']}}</td>
+                                        <td>{{data['mois']}}</td>
+                                        <td>{{data['ordre']}}</td>
+                                        <td>{{data['numero_arret']}}</td>
+                                        <td>{{data['sens']}}</td>
+                                        <td>{{data['nom_arret']}}</td>
+                                        <td>{{data['destination']}}</td>
+                                        <td>{{data['numero_emplacement']}}</td>
+                                        <td>{{data['numero_voie']}}</td>
+                                        <td>{{data['type_voie']}}</td>
+                                        <td>{{data['nom_voie']}}</td>
+                                        <td>{{data['numero_insee']}}</td>
+                                        <td>{{data['code_postal']}}</td>
+                                        <td>{{data['commune']}}</td>
+                                        <td>{{data['localisation']}}</td>
+                                        <td>{{data['date_importation']}}</td>
+                                   </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+
+

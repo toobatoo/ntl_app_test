@@ -1,0 +1,3 @@
+mobile_pa_homepage:
+    path:     /
+    defaults: { _controller: MobilePaBundle:Default:index }

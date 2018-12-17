@@ -1,0 +1,83 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+
+        <div class="jumbotron">
+            <H3>Importer un plan de sondage sous format Excel</H3>
+            <hr>
+            <H4 class="text-warning">Dernières importations</H4> 
+            <h5 class="text-warning">Fichier global <span class="label label-warning">
+                {% if date_fichier_global[0]['date'] is defined %}
+                    {{date_fichier_global[0]['date']}}
+                {% endif %}
+                </span>
+            </h5>
+            <h5 class="text-warning">Fichier référentiel <span class="label label-warning">
+                {% if date_fichier_referentiel[0]['date'] is defined %}
+                    {{date_fichier_referentiel[0]['date']}}
+                {% endif %}
+                </span>
+            </h5>
+            <hr>
+
+            {% for message_save_form in app.session.flashbag.get('infos') %}
+                <div class="alert alert-info" role="alert">
+                    {{ message_save_form }}
+                </div>
+            {% endfor %}
+
+            <table>
+                <form class="form" action="{{path('pa_plan_sondage_upload')}}" method="post" enctype="multipart/form-data">
+                <tr>
+                    <td colspan="2"><input type="file" name="file" /></td>
+                </tr>
+                <tr>
+                    <td style="padding-top:30px;">
+                        <span class="btn btn-primary view-fichier-global">
+                            <span class="glyphicon glyphicon-eye-open"></span> Extrait de l'import
+                        </span>
+                    </td>
+                    <td style="padding-top:30px;padding-left:15px;">
+                        <input class="btn btn-success upload-plan" type="submit" value="Charger le plan" />
+                    </td>
+                </tr>
+                </form>
+            </table>
+        </div>
+
+        <div class="jumbotron">
+            <H3>Re-initialiser les plannings enquêteurs</H3>
+
+            <table>
+                <tr>
+                    <td style="padding-top:30px;">
+                        <span class="btn btn-primary view-zone-enq" type="submit">
+                            <span class="glyphicon glyphicon-eye-open view-zone-enq"></span> Aperçu
+                        </span>
+                    </td>
+                    <td style="padding-top:30px;padding-left:15px;">
+                        <span class="btn btn-success reset-zone-enq" type="submit">
+                            <span class="glyphicon glyphicon-trash"></span> Remise à zéro
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pa/plan_sondage/import.js') }}"></script>
+{% endblock %}
+
+

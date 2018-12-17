@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+    <div class="container navigation">
+        <div class="row navigation">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="navabar-header">
+                    <a class="navbar-brand" href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span> Noctilien</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plannings <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                   <li><a href="{{path('pa_plan_sondage')}}">Plan de sondage</a></li>
+                                   <li><a href="">Attribution de zones</a></li>
+                                </ul>
+                            </li>
+                           
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fiches <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{path('pa_questionnaire_all')}}">Consultation des mesures</a></li>
+                                        <li><a href="QuestionnaireImport">Importation des mesures</a></li>
+                                        <li><a href="">Gestion des photos</a></li>
+                                    </ul>
+                                </li>
+
+                                {% if app.user.hasRole('ROLE_ADMIN') %}
+                                    <li class="dropdown active">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maintenance <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{path('pa_referentiel_changes')}}">Référentiel client: modifications</a></li>
+                                            <li class="update-referentiel cursor"><a>Mise à jour du Référentiel client</a></li>
+                                            <li class="export-referentiel cursor"><a>Télécharger le Référentiel client</a></li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                          
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reporting <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="">Non conformités</a></li>
+                                    <li><a href="">Quotas lignes</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+            </nav>
+        </div><!-- row navigation-->
+        <div class="text-right">{{ app.user.username }} | <a href="{{ path('fos_user_security_logout') }}" >Déconnexion</a></div>
+    </div><!-- container navigation-->
+
+    <div class="container content">
+        <h3>Affichage des modifications du référentiel</h3><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+

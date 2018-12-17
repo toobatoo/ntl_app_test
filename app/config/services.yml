@@ -1,0 +1,73 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    conforme_manager:
+        class: AppBundle\services\Bus\ConformeManager
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    nc_manager:
+        class: AppBundle\services\Bus\NcManager
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    no_manager:
+        class: AppBundle\services\Bus\NoManager
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    conformite_manager:
+        class: AppBundle\services\Bus\ConformiteManager
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    bus_json:
+        class: AppBundle\services\Bus\BusJson
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    bus_json_one:
+        class: AppBundle\services\Bus\BusJsonOne
+        arguments: ["@doctrine.orm.default_entity_manager", %base_url_bus%]
+
+    bus_json_list:
+        class: AppBundle\services\Bus\BusJsonList
+        arguments: ["@doctrine.orm.default_entity_manager", %base_url_bus%, "@service_container"]
+
+    mr_json_list:
+        class: AppBundle\services\Bus\MRJsonList
+        arguments: ["@doctrine.orm.default_entity_manager", %base_url_bus%]
+
+    arret_trottoir_json_list:
+        class: AppBundle\services\Bus\ArretTrottoirJsonList
+        arguments: ["@doctrine.orm.default_entity_manager", %base_url_bus%]
+
+    pa_json:
+        class: AppBundle\services\Pa\PaJson
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container"]
+
+    pa_json_one:
+        class: AppBundle\services\Pa\PaJsonOne
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", %base_url_pa%]
+
+    pa_json_list:
+        class: AppBundle\services\Pa\PaJsonList
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", %base_url_pa%]
+
+    valide_manager_bus:
+        class: AppBundle\services\Bus\ValideManagerBus
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    valide_manager_pa:
+        class: AppBundle\services\Pa\ValideManagerPa
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container"]
+
+    compare_month_provider:
+        class: AppBundle\services\Bus\CompareMonthProvider
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    referentiel_update:
+        class: AppBundle\services\Referentiel\ReferentielUpdate
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container", %base_url_referentiel%]
+
+    plansondage_xls:
+        class: PaBundle\services\PlanSondageXls
+        arguments: ["@doctrine.orm.default_entity_manager", "@service_container"]

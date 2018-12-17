@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+    <div class="container navigation">
+        <div class="row navigation">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="navabar-header">
+                    <a class="navbar-brand" href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span> Noctilien</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-right">
+                    
+                </div>
+            </nav>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+    <div class="container content">
+        <div class="row content">
+            <div class="jumbotron">
+                <h1>Noctilien <small>Relevés bus et points d'arrêts</small></h1>
+
+                <p>
+                    Espace de gestion des relevés d'enquêtes sur le terrain. <br />
+                    Suivant vos droits d'accès, vous pourrez consulter et mettre à jour les données. Vous accèderez également aux tableaux de rapports des résultats et les quotas de réalisations d'enquêtes.
+                </p>
+               <!-- <button class="btn btn-success" onclick="document.location.href='{{path('client_homepage')}}';">Espace client</button>-->
+                <button class="btn btn-success" onclick="document.location.href='{{path('pa_homepage')}}';">Points d'arrêts</button>
+                <button class="btn btn-success" onclick="document.location.href='{{path('bus_homepage')}}';">Bus</button>
+            </div>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+

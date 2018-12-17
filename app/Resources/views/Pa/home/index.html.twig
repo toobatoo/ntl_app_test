@@ -1,0 +1,28 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+    
+
+    <div class="container content">
+        <div class="row content">
+            <div class="jumbotron">
+                <h1>Noctiliens <small>Relevés points d'arrêts</small></h1>
+
+                <p>
+                    Bienvenue dans l'espace de gestion des relevés d'enquêtes.
+                </p>
+
+                    <button class="btn btn-success" onclick="window.location.href='{{ path('bus_reporting_now') }}'"><span class="glyphicon glyphicon-pencil"></span> Suivi relevés</button>
+                    <button class="btn btn-success"><span class="glyphicon glyphicon-user"></span> Suivi enquêteurs</button>
+            </div>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+

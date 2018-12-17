@@ -1,0 +1,78 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+
+        <h3>Re-exporter un JSON</h3>
+            
+         <div class="row col-xs-12 col-lg-12" style="margin-left:5px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        
+                            <div class="input-group col-xs-6">
+                                <input type="text" class="form-control ligne" placeholder="Entrez la ligne...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default submit" type="button">
+                                        Go!
+                                    </button>
+                                </span>
+                            </div>
+                    </div>
+
+                <div class="panel-body">
+                    <div style="width: 100% !important; overflow: scroll; height: 57vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+
+                            <thead>
+                                <tr>
+                                    <th>Statut du JSON</th>
+                                    <th>Date</th>
+                                    <th>Ligne</th>
+                                    <th>Zone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if  infos_ligne is defined %}
+                                {% if infos_ligne is not empty  %}
+                                {% for infos in infos_ligne %}
+                                    <tr>
+                                        <td>
+                                            {% set date = infos['date']|replace({'/': '_'}) %}
+                                            Désactivé <input type="radio" name="{{infos['zone']}}-{{date}}" value="1"
+                                                {% if infos['json'] == 1 %}
+                                                    checked
+                                                {% endif %}
+                                            />
+                                             | 
+                                            <input type="radio" name="{{infos['zone']}}-{{date}}" value="0"
+                                            {% if infos['json'] == 0 %}
+                                                    checked
+                                                {% endif %}
+                                            /> Activé
+                                            <button class="btn btn-success btn-xs ok" id="{{infos['zone']}}-{{date}}" style="margin-left:20px;">OK</button>
+                                        </td>
+                                        <td>{{ infos['date'] }}</td>
+                                        <td>{{ infos['ligne'] }}</td>
+                                        <td>{{ infos['zone'] }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+        </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pa/fiches/json.js') }}"></script>
+{% endblock %}

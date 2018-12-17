@@ -1,0 +1,163 @@
+{% extends 'base_client.html.twig' %}
+
+{% block meta %}
+{{parent()}}
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+{% endblock %}
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+        <div class="row content">
+            <div style="width: 100% !important; overflow: scroll; height: 80vh;">
+            <table>
+            <tr>
+                <td><h3 style="display: inline;">Dysfonctionnements</h3></td>
+                <td style="padding-left:50px;">
+                    <select class="year">
+                        {% if year_to_show is defined and year_to_show != '' %}
+                            <option>{{year_to_show}}</option>
+                        {% else %}
+                            <option>Sélectionner une année</option>
+                        {% endif %}
+                        <option>{{ "now"|date("Y") }}</option>
+                        <option>{{ "now"|date("Y") -1 }}</option>
+                    </select>
+                </td>
+                <td style="padding-left:25px;">
+                    <select class="month">
+                        {% if month_to_show is defined and month_to_show != '' %}
+                            <option value='{{month_to_show}}'>{{ list_months[ month_to_show ] }}</option>
+                            {% else %}
+                            <option>Sélectionner un mois</option>
+                        {% endif %}
+                    {% set i=0 %}
+                    {% for month in list_months %}
+                        <option value="{{ i }}">{{ month }}</option>
+                        {% set i = i+1 %}
+                    {% endfor %}
+                    </select>
+                </td>
+                <td style="padding-left:8px;">
+                    <span class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-play-circle"></span>
+                    </span>
+                </td>
+            </tr>
+            </table>
+
+            <table class="table tb_dysfonctionnement" style="margin-top:20px;">
+            <thead>
+                <tr>
+                    <td colspan="5">
+                        <h4>
+                            {{ list_months[ month_to_show ]|upper }}
+                            <span class="somme_penalites" 
+                            style="margin-left: 15px;color:firebrick;font-weight:bold;">
+                            </span>
+                        </h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="15">
+                        <span class="btn btn-xs btn-success export-year">Exporter l'année complète</span>
+                        <span class="btn btn-xs btn-success export" style="margin-left:20px;">Exporter {{list_months[ month_to_show ]}}</span>
+                    
+                    
+                    
+                        <span class="btn btn-success btn-xs add" style="margin-left:20px;">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            <span> Ajouter</span>
+                        </span>
+                    
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-center matricule" style="font-weight:bold;"></td>
+                    <td class="text-center modification" style="font-weight:bold;"></td>
+                    <td colspan="4"></td>
+                    <td class="text-right" style="font-weight:bold;">Totaux</td>
+                    <td class="text-center min" style="font-weight:bold;"></td>
+                    <td class="text-center maj" style="font-weight:bold;"></td>
+                    <td class="text-center pv_decale" style="font-weight:bold;"></td>
+                    <td class="text-center annule_grille" style="font-weight:bold;"></td>
+                    <td class="text-center annule_pv" style="font-weight:bold;"></td>
+                    <td class="text-center fact_mi" style="font-weight:bold;color:firebrick;"></td>
+                    <td class="text-center fact_ma" style="font-weight:bold;color:firebrick;"></td>
+                </tr>
+                <tr >
+                    <th nowrap>Actions</th>
+                    <th nowrap>Matricule</th>
+                    <th nowrap>Modification</th>
+                    <th nowrap>Date</th>
+                    <th nowrap>Ligne</th>
+                    <th nowrap>Typologie</th>
+                    <th nowrap style="min-width:300px;">Signalement</th>
+                    <th nowrap style="min-width:300px;">Action/réponse d'OT</th>
+                    <th nowrap>Min</th>
+                    <th nowrap>Maj</th>
+                    <th nowrap>PV décalé</th>
+                    <th nowrap>Annulation grille</th>
+                    <th nowrap>Annulation PV</th>
+                    <th nowrap>Fact min</th>
+                    <th nowrap>Fact maj</th>
+                    <th nowrap>Date création</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for dysfonctionnement in dysfonctionnement_list %}
+                    <tr  
+                        {% if loop.index is divisibleby(2) %}
+                            class="alert alert-success" role="alert"
+                        {% else %}
+                            class="alert alert-info" role="alert"
+                        {% endif %}>
+                        <td>
+                        
+                            <a href="{{path('app_dysfonctionnement_remove', { id: dysfonctionnement['id'],
+                                        year_to_show: year_to_show, month_to_show: month_to_show })}}">
+                            <span class="glyphicon glyphicon-trash" style="cursor:pointer; color:firebrick;"></span></a>
+                        
+                            <span style="visibility: hidden;"> . . </span>
+                            <a href="{{path('app_dysfonctionnement_one', { id: dysfonctionnement['id'],
+                                        year_to_show: year_to_show, month_to_show: month_to_show })}}">
+                            <span class="glyphicon glyphicon-pencil" style="color:tomato;"></span></a>
+                        </td>
+                        <td class="mat">{{ dysfonctionnement['matricule'] }}</td>
+                        <td class="mod">{{ dysfonctionnement['modification'] }}</td>
+                        <td>{{ dysfonctionnement['date'] }}</td>
+                        <td>{{ dysfonctionnement['ligne'] }}</td>
+                        <td>{{ dysfonctionnement['typologie'] }}</td>
+                        <td>{{ dysfonctionnement['signalement'] }}</td>
+                        <td>{{ dysfonctionnement['reponse_ot'] }}</td>
+                        <td class="mi">{{ dysfonctionnement['min'] }}</td>
+                        <td class="ma">{{ dysfonctionnement['maj'] }}</td>
+                        <td class="p_d">{{ dysfonctionnement['pv_decale'] }}</td>
+                        <td class="a_g">{{ dysfonctionnement['annulation_grille'] }}</td>
+                        <td class="a_p">{{ dysfonctionnement['annulation_pv'] }}</td>
+                        <td class="fact_min">{{ dysfonctionnement['fact_min'] }}</td>
+                        <td class="fact_maj">{{ dysfonctionnement['fact_maj'] }}</td>
+                        <td>{{ dysfonctionnement['date_create'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('js/client/dysfonctionnement.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+
+            
+        {% for message in app.session.flashbag.get('infos') %}
+            {% if message == 'Problème d\'insertion!' %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    
+    
+    <div class="jumbotron">
+        <h4>Télécharger par liste</h4>
+        <table class='table table-condensed' style="width: 80%;">
+            <form id="data" method="post" enctype="multipart/form-data" 
+                    action="{{path('pa_feuille_route_import_by_list')}}">
+                <tr>
+                    <td><input type="file" name="file" /></td>
+                    <td><input type="submit" value="OK" class="btn btn-xs btn-primary" /></td>
+                </tr>
+                    <td><p>Exemple de fichier à télécharger (.csv avec séparateur point virgule).</p></td>
+                    <td><button class="btn btn-xs btn-primary download-example">Télécharger</button></td>
+                </tr>
+            </form>
+            </table>
+    </div>
+
+
+        <div class="row col-xs-12 col-lg-12" >
+
+
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span style="font-size:1.2em;font-weight:bold;padding-right:25px;">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Planning 
+                        </span>
+                
+                        <span>
+                            <select class="select-mois">
+                                <option>Mois</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </span>
+                        
+                        <span style="margin-left:15px;">
+                            <select class="select-zones">
+                                <option>Zones</option>
+                                {% if zones is defined %}
+                                    {% for zone in zones %}
+                                        <option value="{{zone['zone']}}">{{zone['zone']}}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </span>
+                        
+                        {% if app.user.hasRole('ROLE_ADMIN') %}
+                        <td>
+                            <span class="btn btn-xs btn-success save-planning" style="margin-left:15px;">Enregistrer</span>
+                        </td>
+                       {% endif %}
+                            <span class="btn btn-xs btn-success export-planning" style="margin-left:15px;">Exporter</span>
+                        {% if app.user.hasRole('ROLE_ADMIN') %}
+                            <span class="btn btn-xs btn-success import-by-list" style="margin-left:15px;">Importer par liste</span>
+                        {% endif %}
+                       
+                    </div>
+
+                    <div class="panel-body" style="width: 100% !important; overflow: scroll; height: 24vh;">
+                        <table class="table table-condensed table-bordered"style="margin-top:4px;font-size:0.9em;">
+                            <tr>
+                                <td><strong>Mois</strong></td>
+                                <td>
+                                    <input type="text" name="mois" style="border:none;" class="text-primary mois-title"
+                                    {% if mois is defined %}value="{{mois}}"{% endif %} />
+                                </td>
+
+                                <td><strong>Zone</strong></td>
+                                <td>
+                                    <input type="text" name="zone" style="border:none;" class="text-primary zone-title"
+                                    {% if zone is defined %}value="{{zone}}"{% endif %} />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap><strong>Enquêteur</strong></td>
+                                <td>
+                                    <input type="text" name="enqueteur" placeholder="N° enquêteur" class="text-primary enqueteur-title" 
+                                    {% if zone_enq[0]['enqueteur'] is defined %}
+                                        value="{{zone_enq[0]['enqueteur']}}"
+                                    {% endif %}
+                                    />
+                                </td>
+
+
+                                <td nowrap><strong>Date</strong></td>
+                                <td>
+                                    <input type="text" name="date" placeholder="00/00/00" class="text-primary date-title" 
+                                    {% if zone_enq[0]['date'] is defined %}
+                                        value="{{zone_enq[0]['date']}}"
+                                    {% endif %}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap><strong>Plage horaire début</strong></td>
+                                <td>
+                                    <input type="text" name="plage_debut" placeholder="00:00" class="text-primary plage-debut-title" 
+                                    {% if zone_enq[0]['plage_horaire_debut'] is defined %}
+                                        value="{{zone_enq[0]['plage_horaire_debut']}}"
+                                    {% endif %}
+                                    />
+                                </td>
+
+                                <td nowrap><strong>Plage horaire fin</strong></td>
+                                <td>
+                                    <input type="text" name="plage_fin" placeholder="00:00" class="text-primary plage-fin-title" 
+                                    {% if zone_enq[0]['plage_horaire_fin'] is defined %}
+                                        value="{{zone_enq[0]['plage_horaire_fin']}}"
+                                    {% endif %}
+                                    />
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span style="font-size:1.2em;font-weight:bold;">
+                        <span class="glyphicon glyphicon-file"></span>
+                            Feuille de route 
+                        </span>
+                    </div>
+
+                    <div class="panel-body" style="width: 100% !important; overflow: scroll; height: 57vh;">
+                        <table class="table table-condensed table-bordered"style="margin-top:4px;font-size:0.9em;">
+                            <tr>
+                                <th>Validé</th>
+                                <th>Json</th>
+                                <th nowrap>Id</th>
+                                <th nowrap>Ligne</th>
+                                <th nowrap>Zone</th>
+                                <th nowrap>Ordre</th>
+                                <th nowrap>GIPA</th>
+                                <th nowrap>Nom arrêt</th>
+                                <th nowrap>Destination</th>
+                            </tr>
+                            {% if fichier_globals is defined %}
+                                {% for fichier_global in fichier_globals %}
+                                    <tr>
+                                        <td class="text-center">
+                                            {% if fichier_global['valid'] == 2 %}
+                                                <span class="glyphicon glyphicon-ok text-success"></span>
+                                            {% else %}
+                                                <span class="glyphicon glyphicon-remove text-danger"></span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            {% if fichier_global['generated'] == 1 %}
+                                                <span class="glyphicon glyphicon-ok text-success"></span>
+                                            {% else %}
+                                                <span class="glyphicon glyphicon-remove text-danger"></span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{fichier_global['id']}}</td>
+                                        <td>{{fichier_global['libelle_commercial']}}</td>
+                                        <td>{{fichier_global['zone']}}</td>
+                                        <td>{{fichier_global['ordre']}}</td>
+                                        <td>{{fichier_global['numero_emplacement']}}</td>
+                                        <td>{{fichier_global['nom_arret']}}</td>
+                                        <td>{{fichier_global['destination']}}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/pa/feuille_route/home.js') }}"></script>
+{% endblock %}
+
+
+

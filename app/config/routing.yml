@@ -1,0 +1,30 @@
+mobile_pa:
+    resource: "@MobilePaBundle/Controller/"
+    type:   annotation
+
+client:
+    resource: "@ClientBundle/Controller/"
+    type:     annotation
+
+pa:
+    resource: "@PaBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+bus:
+    resource: "@BusBundle/Controller/"
+    type:     annotation
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+api:
+    resource: '.'
+    type:     'api_platform'
+    prefix:   '/api' # Optional

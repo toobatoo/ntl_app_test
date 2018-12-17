@@ -1,0 +1,63 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+    
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container content">
+
+        <h3>Liste des lignes à exporter en JSON</h3>
+            
+         <div class="row col-xs-12 col-lg-12" style="margin-left:5px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Liste des lignes
+                        <!--<select  class="date_select" style="margin-bottom:3px;">
+                            <option value="-">Choisir une date</option>
+                            {% if listDates is defined %}
+                                {% for date in listDates %}
+                                    <option value="{{ date['date'] }}">{{ date['date'] }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>-->
+                    </div>
+
+                <div class="panel-body">
+                    <div class="alert-content"></div>
+                    
+                    <div style="width: 100% !important; overflow: scroll; height: 57vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+
+                            <thead>
+                                <tr>
+                                    <th>Actions</th>
+                                    <th>Ligne</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if listLignes is defined %}
+                                {% for ligne in listLignes %}
+                                    <tr>
+                                        <td class="text-center">
+                                            <span class="btn btn-xs btn-success generate-json">JSON</span>
+                                        </td>
+                                        <td><span class="ligne">{{ligne['ligne']}}</span></td>
+                                        <td><span class="date">{{ligne['date']}}</span></td>
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+        </div>
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bus/fiches/json.js') }}"></script>
+{% endblock %}

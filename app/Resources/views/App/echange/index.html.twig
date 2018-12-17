@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    
+    <div class="container navigation">
+        <div class="row navigation">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="navabar-header">
+                    <a class="navbar-brand" href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span> Noctilien</a>
+                </div>
+            </nav>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+    <div class="container content">
+        <div class="row content">
+        <div>
+            <span class="btn btn-xs btn-primary back" >Retour</span>
+            <span class="btn btn-xs btn-primary new" style="margin-left:5px;" >Nouveau document</span>
+            <a href="mailto:pabusmr@objectifterrain.fr
+                    ?subject=Noctiliens espace échange
+                    &cc=beatrice.molinier@ratp.fr; dominique.aubry@ratp.fr; jennifer.castillo@ratp.fr; christophe.baudoux@ratp.fr; norbert.rebillard@ratp.fr
+                    &body=Un nouveau document est disponible dans l'espace d'échange!">
+                    <span class="btn btn-xs btn-primary send-alert" style="margin-left:5px;" >
+                        Envoyer une alerte
+                    </span>
+                </a>
+        </div>
+        <div style="color:red;font-weight:bold;font-size:1.2em;">
+            {{error_message}}
+        </div>
+            <div class="jumbotron form-window">
+                <form method="post" action="{{path('app_echange_insert')}}">
+                    <table class="table">
+                        <tr>
+                            <td colspan="2"><h3>Signaler un échange de document</h3></td>
+                        </tr>
+                        <tr>
+                            <td>Emetteur</td>
+                            <td>
+                                <select name="emetteur_val">
+                                    <option value="OT">OT</option>
+                                    <option value="RATP">RATP</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nom de l'emetteur <span style="color:red;font-size:.8em;">*</span></td>
+                            <td><input type="text" name="emetteur_name" /></td>
+                        </tr>
+                        <tr>
+                            <td>Nom du document (avec extension) <span style="color:red;font-size:.8em;">*</span></td>
+                            <td><input type="text" name="doc_name" /></td>
+                        </tr>
+                        <tr>
+                            <td>Date de la transmission <span style="color:red;font-size:.8em;">*</span></td>
+                            <td><input type="text" name="date" placeholder="jj/mm/aaaa" /></td>
+                        </tr>
+                        <tr>
+                            <td>Commentaire</td>
+                            <td><textarea name="comment" rows="4" cols="50"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" class="btn btn-xs btn-primary" value="Valider" /></td>
+                        </tr>
+                        <tr><td colspan="2"><span style="color:red;font-size:.8em;">* Champs obligatoires</span></td></tr>
+                    </table>
+                </form>
+            </div>
+
+            <div>
+                <table class="table">
+                    <tr>
+                        <td>Envoyé par</td>
+                        <td>Date</td>
+                        <td>Document</td>
+                        <td>Utilisateur</td>
+                        <td>Commentaire</td>
+                        <td>Action</td>
+                    </tr>
+                        {% for data in list %}
+                        {% if data['emetteur'] is defined %}
+                            <tr>
+                                <td>{{data['emetteur']}}</td>
+                                <td>{{data['date']}}</td>
+                                <td>{{data['document_nom']}}</td>
+                                <td>{{data['emetteur_nom']}}</td>
+                                <td>{{data['commentaire']}}</td>
+                                <td><a href="{{path('app_echange_remove', {id: data['id']})}}"><span class="btn btn-xs btn-danger">Supprimer</span></a></td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                </table>
+            </div>
+            
+        </div><!-- row navigation-->
+        
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('js/app/echange/index.js') }}"></script>
+{% endblock %}

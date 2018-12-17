@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}RATP - Noctilien{% endblock %}</title>
+        {% block metas %}{% endblock %}
+       
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/dist/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/general.css') }}">
+        {% endblock %}
+       
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div class="text-center loader"></div>
+        {% block body %}{% endblock %}
+       
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('jquery/dist/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <script type="text/javascript" src="{{ asset('js/general.js') }}"></script>
+        {% endblock %}
+ 
+    </body>
+</html>

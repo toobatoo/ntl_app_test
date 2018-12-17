@@ -1,0 +1,286 @@
+{% extends 'base_pa.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+<span class="mois_info">{{mois}}</span>
+<span class="table_info">{{table}}</span>
+    
+    <div class="container content">
+
+        {% if( mois < 1 ) %}
+            <h3>Consultation de l'ensemble des fiches saisies</h3>
+        {% else %}
+            <h3>Historique de {{ table|replace({ ("_"): "/" }) }}</h3>
+        {% endif %}
+
+            
+            <div class="row col-xs-3 col-lg-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Filtre de recherche
+                    </div>
+                    <div class="panel-body">
+                        <table style="width:100%;height:100%;">
+                            <tr>
+                                <td>
+                                    <select class="enq_select" style="width:100%!important;height:100%!important;">
+                                        <option value="-">Enquêteur</option>
+                                        {% for enqueteur in list_enqueteurs %}
+                                            <option value="{{ enqueteur['enqueteur'] }}">{{ enqueteur['enqueteur'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="ligne_select" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <option value="-">Ligne</option>
+                                        {% for ligne in list_lignes %}
+                                            <option value="{{ ligne['ligne'] }}">{{ ligne['ligne'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="zone_select" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <option value="-">Zone</option>
+                                        {% for zone in list_zones %}
+                                            <option value="{{ zone['zone'] }}">{{ zone['zone'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="date_select" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <option value="-">Date</option>
+                                        {% for date in list_dates %}
+                                            <option value="{{ date['date'] }}">{{ date['date'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                   <div id="custom-search-input" style="width:100%!important;height:100%!important;margin-top:7px;">
+                                        <div class="input-group col-xs-12 ">
+                                            <input class="form-control input-xs input-gipa" placeholder="N°GIPA" type="text">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary btn-xs btn-gipa" type="button">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> 
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">Situation fiches</div>
+                    <div class="panel-body">
+                        
+                        <div id="container" style="min-width: 210px; max-height:260px; heigth:230px;max-width: 300px;margin:0 auto;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row col-xs-9 col-lg-9" style="margin-left:5px;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Liste des questionnaires
+                        <select style="margin-left:20px;" class="history">
+                            <option>Historique</option>
+                            <option value="1">M -1</option>
+                            <option value="2">M -2</option>
+                            <option value="3">M -3</option>
+                            <option disabled>--------------</option>
+                            <option value="0">M</option>
+                        </select>
+                        {% if app.user.hasRole('ROLE_ADMIN') %}
+                            <span> | </span>
+                                <sapn class="btn btn-xs btn-success export" >Exporter</span>
+                        {% endif %}
+                    </div>
+
+                <div class="panel-body">
+                    
+                        {#<select  class="PA_select" style="margin-bottom:3px;">
+                            <option value="-">Filtrer par points d'arrêts</option>
+                            {% for pa in list_points_arrets %}
+                                <option value="{{ pa['arret_montee'] }}">{{ pa['arret_montee'] }}</option>
+                            {% endfor %}
+                        </select>#}
+                    
+                    <div style="width: 100% !important; overflow: scroll; height: 57vh;"/>
+                        <table class="table table-bordered table-condensed" style="margin-top:4px;font-size:0.9em;" >
+
+                        <thead>
+                            <tr>
+                                <th>Actions</th>
+                                <th>Validée</th>
+                                <th>Json</th>
+                                <th>Date JSON</th>
+                                <th>ID</th>
+                                <th>Enquêteur</th>
+                                <th>Zone</th>
+                                <th>Ligne</th>
+                                <th>GIPA</th>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Heure validation</th>
+                                <th>Q 1.1</th>
+                                <th>Q 1.2</th>
+                                <th>Q 1.3</th>
+                                <th>Q 1.4</th>
+                                <th>Q 2.1</th>
+                                <th>Q 2.2</th>
+                                <th>Q 2.3</th>
+                                <th>Q 2.4</th>
+                                <th>Q 2.5</th>
+                                <th>Q 3.1</th>
+                                <th>Q 3.2</th>
+                                <th>Q 3.3</th>
+                                <th>Q 3.4</th>
+                                <th>Q 3.5</th>
+                                <th>Q 4.1</th>
+                                <th>Q 4.1 obs</th>
+                                <th>Q 4.2</th>
+                                <th>Q 4.2 obs</th>
+                                <th>Q 4.3</th>
+                                <th>Q 4.3 obs</th>
+                                <th>Q 4.4</th>
+                                <th>Q 4.4 obs</th>
+                                <th>Q 4.5</th>
+                                <th>Q 4.5 obs</th>
+                                <th>Q 4.6</th>
+                                <th>Q 4.6 obs</th>
+                                <th>Q 4.7</th>
+                                <th>Q 4.7 obs</th>
+                                <th>Q 4.8</th>
+                                <th>Q 4.8 obs</th>
+                                <th>Q 4.9</th>
+                                <th>Q 4.9 obs</th>
+                                <th>Observations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for questionnaire in questionnaires %}
+                                <tr class="valid_{{ questionnaire.getvalid() }}">
+                
+                                    <td class="text-center" nowrap>
+                                    {% if app.user.hasRole('ROLE_ADMIN') %}
+                                        <a href="{{ path('pa_questionnaire_remove_id', {id: questionnaire.getIdGlobal(), mois: mois}) }}" >
+                                            <span class="glyphicon glyphicon-trash text-warning cursor"></span> 
+                                        </a>
+                                        <span style="color:white;"> . . </span>
+                                    {% endif %}
+                                        <a href="{{ path('pa_questionnaire_one', {id: questionnaire.getIdGlobal(), table: table, mois: mois}) }}" >
+                                            <span class="glyphicon glyphicon-pencil text-primary cursor">
+                                        </a>
+                                         <span style="color:white;"> . . </span>
+                                         <a href="{{ path('pa_photo_import', {id: questionnaire.getIdGlobal(), table: table, mois: mois})}}">
+                                            <span class="glyphicon glyphicon-camera text-warning cursor">
+                                        </a>
+                                    </td>
+                                    
+
+                                    <td class="text-center">
+                                        {% if questionnaire.valid() == "2" %}
+                                            <span class="glyphicon glyphicon-ok text-success"></span>
+                                        {% else %}
+                                            <span style="color:silver;" class="glyphicon glyphicon-minus"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if questionnaire.getJson() == 0 %}
+                                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok text-success"></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                    {% if questionnaire.getGeneratedDate() != '' %}
+                                    {% if questionnaire.getGeneratedDate() != 0 %}
+                                        {% set whole_date_time = questionnaire.getGeneratedDate()|split(' ') %}
+                                        {% set whole_date_split = whole_date_time[0]|split('-') %}
+                                        {% set time = whole_date_time[1] %}
+                                        {% set date = whole_date_split[2]~'/'~whole_date_split[1]~'/'~whole_date_split[0] %}
+                                            {{ date~' '~time }}
+                                    {% endif %}
+                                    {% endif %}
+                                    </td>
+                                    <td>{{ questionnaire.getIdGlobal() }}</td>
+                                    <td>{{ questionnaire.getEnqueteur() }}</td>
+                                    <td>{{ questionnaire.getZone() }}</td>
+                                    <td>{{ questionnaire.getLigne() }}</td>
+                                    <td>{{ questionnaire.getGipa() }}</td>
+                                    <td>{{ questionnaire.getDate() }}</td>
+                                    <td>{{ questionnaire.getHeure() }}</td>
+                                    <td>{{ questionnaire.getHeureValid() }}</td>
+                                    <td>{{ questionnaire.getQ11() }}</td>
+                                    <td>{{ questionnaire.getQ12() }}</td>
+                                    <td>{{ questionnaire.getQ13() }}</td>
+                                    <td>{{ questionnaire.getQ14() }}</td>
+                                    <td>{{ questionnaire.getQ21() }}</td>
+                                    <td>{{ questionnaire.getQ22() }}</td>
+                                    <td>{{ questionnaire.getQ23() }}</td>
+                                    <td>{{ questionnaire.getQ24() }}</td>
+                                    <td>{{ questionnaire.getQ25() }}</td>
+                                    <td>{{ questionnaire.getQ31() }}</td>
+                                    <td>{{ questionnaire.getQ32() }}</td>
+                                    <td>{{ questionnaire.getQ33() }}</td>
+                                    <td>{{ questionnaire.getQ34() }}</td>
+                                    <td>{{ questionnaire.getQ35() }}</td>
+                                    <td>{{ questionnaire.getQ41() }}</td>
+                                    <td>{{ questionnaire.getQ41Obs() }}</td>
+                                    <td>{{ questionnaire.getQ42() }}</td>
+                                    <td>{{ questionnaire.getQ42Obs() }}</td>
+                                    <td>{{ questionnaire.getQ43() }}</td>
+                                    <td>{{ questionnaire.getQ43Obs() }}</td>
+                                    <td>{{ questionnaire.getQ44() }}</td>
+                                    <td>{{ questionnaire.getQ44Obs() }}</td>
+                                    <td>{{ questionnaire.getQ45() }}</td>
+                                    <td>{{ questionnaire.getQ45Obs() }}</td>
+                                    <td>{{ questionnaire.getQ46() }}</td>
+                                    <td>{{ questionnaire.getQ46Obs() }}</td>
+                                    <td>{{ questionnaire.getQ47() }}</td>
+                                    <td>{{ questionnaire.getQ47Obs() }}</td>
+                                    <td>{{ questionnaire.getQ48() }}</td>
+                                    <td>{{ questionnaire.getQ48Obs() }}</td>
+                                    <td>{{ questionnaire.getQ49() }}</td>
+                                    <td>{{ questionnaire.getQ49Obs() }}</td>
+                                    <td>{{ questionnaire.getObs() }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            <div style="margin-left:15px;">
+                <input type="checkbox" value="Save" checked class="saisies_saved"/> Saisies enregistrées
+                <input type="checkbox" value="toUpdate" checked class="saisies_to_pdate"/> Saisies à valider
+            </div>
+
+        </div><!-- row navigation-->
+        
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('js/pa/fiches/all.js') }}"></script>
+{% endblock %}

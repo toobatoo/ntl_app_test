@@ -1,0 +1,52 @@
+{% extends 'base_bus.html.twig' %}
+
+
+{% block body %}
+
+{% block menu %}
+    {{ parent() }}
+{% endblock %}
+
+    <div class="container">
+        
+        <div class="row content">
+
+            <h3>Sauvegarde et purge des données</h3>
+
+            {% for message_save_form in app.session.flashbag.get('infos') %}
+                <div class="alert alert-info" role="alert">
+                    {{ message_save_form }}
+                </div>
+            {% endfor %}
+            
+            <div class="row col-xs-3 col-lg-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Données existantes</div>
+                    <div class="panel-body">
+                        <table style="width:100%;">
+
+                        {% if list_dates_convert is defined %}    
+                            {% for date in list_dates_convert %}
+                                <tr>
+                                    <td><span class="name_of_new_database">{{date}}</span></td>
+                                    <td><span class="glyphicon glyphicon-refresh cursor text-primary save"></span></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        </table>
+                    </div>
+                </div>
+            
+            </div>
+        </div><!-- row navigation-->
+    </div><!-- container navigation-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bus/database/save.js') }}"></script>
+{% endblock %}
+
+
