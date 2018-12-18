@@ -1,4 +1,4 @@
-app/config/parameters.yml
+#app/config/parameters.yml
 web/export_public/
 web/JSON/
 web/photos

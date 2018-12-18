@@ -6,3 +6,6 @@ body{ padding-top: 70px; }
 .form-window {
     display: none;
  }
+ .url_photos_api{
+    visibility: hidden;
+}

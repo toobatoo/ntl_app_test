@@ -42,6 +42,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        url_photos_api: "http://localhost:8080/ntl_pictures"
 
 # Doctrine Configuration
 doctrine:

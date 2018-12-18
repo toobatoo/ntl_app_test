@@ -1,11 +1,12 @@
 {% extends 'base_pa.html.twig' %}
 
-
 {% block body %}
 
 {% block menu %}
     {{ parent() }}
 {% endblock %}
+
+<span class="url_photos_api">{{url_photos_api}}</span>
 
     <div class="container content">
 
@@ -40,7 +41,8 @@
                                 {% for ligne in listLignes %}
                                     <tr>
                                         <td class="text-center">
-                                            <span class="btn btn-xs btn-success generate-json">JSON</span>
+                                            <button class="btn btn-xs btn-success generate-zip-file">Zipper photos</button>
+                                            <button class="btn btn-xs btn-success generate-json">Générer JSON</button>
                                         </td>
                                         <td><span class="ligne">{{ligne['ligne']}}</span></td>
                                         <td><span class="date">{{ligne['date']}}</span></td>

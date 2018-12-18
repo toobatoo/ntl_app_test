@@ -1,0 +1,30 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: 3306
+    database_name: bus
+    database_user: objectifarobt
+    database_password: obt2011
+    database_PA_host: localhost
+    database_PA_port: 3306
+    database_PA_name: point_arret_test
+    database_PA_user: objectifarobt
+    database_PA_password: obt2011
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: sebastien@objectifterrain.fr
+    mailer_password: null
+    secret: ffa02fdfc9385748aaf9bb39dcfccf9fcd8e0329
+    base_url: '/../../../../web'
+
+    base_url_bus: '/../../../../web/JSON/bus/ratp'
+    base_url_pa: '/../../../../web/JSON/pa/ratp'
+    base_url_referentiel: '/../../../../web/JSON/referentiel'
+    path_photos: '/Applications/MAMP/htdocs/ntl_app_test/web/photos'
+    path_json: '/Applications/MAMP/htdocs/ntl_app_test/web/JSON'
+    
+    #base_url_bus: '/../../../../../RATP/Partenaire/emet'
+    #base_url_pa: '/../../../../../RATP/Partenaire/emet'
+    #base_url_referentiel: '/../../../../../RATP/Partenaire/recep'
+    #path_photos: 'C:\wamp\www\ntl_app_test\web\photos'
+    #path_json: 'C:\wamp\www\ntl_app_test\web\JSON'
