@@ -2,3 +2,6 @@
 web/export_public/
 web/JSON/
 web/photos
+var/cache/
+var/logs/
+var/sessions/
