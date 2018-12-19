@@ -2,7 +2,7 @@
 parameters:
     database_host: localhost
     database_port: 3306
-    database_name: bus
+    database_name: bus_test
     database_user: objectifarobt
     database_password: obt2011
     database_PA_host: localhost

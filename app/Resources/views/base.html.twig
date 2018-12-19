@@ -14,7 +14,12 @@
     </head>
     <body>
         <div class="text-center loader"></div>
-        {% block body %}{% endblock %}
+        <div class="alert alert-danger" role="alert">
+            <span><strong>APPLICATION DE TEST</strong></span>
+        </div>
+        {% block body %}
+        
+        {% endblock %}
        
         {% block javascripts %}
             <script type="text/javascript" src="{{ asset('jquery/dist/jquery.min.js') }}"></script>
