@@ -41,7 +41,11 @@
                                 {% for ligne in listLignes %}
                                     <tr>
                                         <td class="text-center">
-                                            <button class="btn btn-xs btn-success generate-zip-file">Zipper photos</button>
+                                            <button class="btn btn-xs btn-warning generate-zip-file">Zipper photos</button>
+                                            <button class="btn btn-xs btn-primary report-zip-file hide"
+                                            onclick="viewReport( '{{ligne['ligne']}}', '{{ligne['date']}}' );">
+                                                Rapport zip
+                                            </button>
                                             <button class="btn btn-xs btn-success generate-json">Générer JSON</button>
                                         </td>
                                         <td><span class="ligne">{{ligne['ligne']}}</span></td>

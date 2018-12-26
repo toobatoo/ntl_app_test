@@ -262,4 +262,19 @@ class PaJsonRepository extends \Doctrine\ORM\EntityRepository
 	
 		return $result;
 	}
+
+	public function getListPhotos( $id_global, $ligne, $date )
+	{
+		$date_format = str_replace( "/", "_", $date );
+		$db = $this->_em->getConnection();
+	
+		$query = "SELECT photo_name FROM id_global_photos WHERE id_global=$id_global AND ligne='$ligne'
+		AND date='$date_format'";
+
+		$stmt = $db->prepare($query);
+		$stmt->execute();
+		$result = $stmt->fetchAll();
+	
+		return $result;
+	}
 }

@@ -141,9 +141,11 @@ class PaJsonList
             $dateValidation = mktime($hfr_minute, $hfr_heure, 0, $mois_resultat, $jour_resultat, $annee_resultat)*1000;
             $datePremiereValidation = mktime($hfr_minute, $hfr_heure, 0, $mois_resultat, $jour_resultat, $annee_resultat)*1000;
             
+            
             $this->setSubHeader( $this->numeroGrille, $dateSaisie, 
                                 $list_gipa_zone[$j][0]['arret_id'], $dateValidation,
-                                    $datePremiereValidation, $list_gipa_zone[$j][0]['obs'] );
+                                    $datePremiereValidation, $list_gipa_zone[$j][0]['obs'],
+                                    $list_id_pa, $ligne, $date );
             //--------------------SUB HEADER--------------------------------------
             //--------------------QUESTIONS---------------------------------------
             $value_Q_1 = $this->Q_1( $list_gipa_zone[$j][0]['Q_1_1'], $list_gipa_zone[$j][0]['Q_1_2'],
@@ -240,8 +242,22 @@ class PaJsonList
 
     private function setSubHeader( $numeroGrille, $dateSaisie, 
                                         $arret_id, $dateValidation,
-                                         $datePremiereValidation, $obs )
+                                         $datePremiereValidation, $obs, $list_id_pa, $ligne, $date )
                 {
+
+                    //Liste photos
+                    $list_photos = array();
+                    for( $e=0; $e<sizeof( $list_id_pa ); $e++ )
+                    {
+                        $photo = $this->repositoryPA->getListPhotos( $list_id_pa[$e]['id_global'], $ligne, $date );
+                        for( $x=0; $x<sizeof( $photo ); $x++ ) {
+                            if ( isset($photo[$x]) )
+                            $list_photos[] = "\"".$photo[$x]['photo_name']."\"";
+                        }
+                        
+                    }  
+                    //---------------
+
                     $this->setText('{
 				"enqueteGrilleId":'.$numeroGrille.',
     			"grilleVersionId":1020,
@@ -252,7 +268,8 @@ class PaJsonList
     			"dateValidation":'.$dateValidation.',
     			"datePremiereValidation":'.$datePremiereValidation.',
     			"libelle":"Point d\'arrêt",
-    			"commentaire":"'.addslashes($obs).'",
+                "commentaire":"'.addslashes($obs).'",
+                "photos": ['. implode(',', $list_photos) .'],
     			"itemMobileAndroidList":[');
     }
 

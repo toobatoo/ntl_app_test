@@ -7,8 +7,8 @@ $(document).ready(function () {
 
         var ligne = $(this).parent().next('td').find('.ligne').text();
         var date = $(this).parent().next('td').next('td').find('.date').text();
-        //alert(ligne + ' ' + date + ' ' + $('.url_photos_api').text());
-        setTimeout(createZipPhotos(ligne, date), 1000);
+
+        setTimeout(createZipPhotos($(this), ligne, date), 1000);
     });
 
     $('.generate-json').click(function () {
@@ -17,7 +17,7 @@ $(document).ready(function () {
 
         var ligne = $(this).parent().next('td').find('.ligne').text();
         var date = $(this).parent().next('td').next('td').find('.date').text();
-        // setTimeout(generateJson(ligne, date), 1000);
+        setTimeout(generateJson(ligne, date), 1000);
     });
 
     $('.submit').click(function () {
@@ -35,11 +35,11 @@ $(document).ready(function () {
     });
 });
 
-function createZipPhotos(ligne, date) {
+function createZipPhotos(elem, ligne, date) {
 
     $.ajax({
 
-        url: $('.url_photos_api').text() + "/generate-photo-zip",
+        url: $('.url_photos_api').text() + "_PA/generate-photo-zip-pa",
         type: 'POST',
         async: false,
         data: "ligne=" + ligne + "&date=" + date,
@@ -47,12 +47,14 @@ function createZipPhotos(ligne, date) {
         success: function (response, statut) {
             if (response == true) {
                 alert('Zip photos généré!');
-
+                elem.parent().find('.generate-json').prop('disabled', false);
+                elem.removeClass('btn-warning').addClass('btn-success');
+                elem.parent().find('.report-zip-file').removeClass('hide').addClass('show-this');
             }
         },
         error: function (resultat, statut, erreur) {
             $('.loader').empty('.svg-loader');
-            alert('Problème génération zip photos: ' + erreur);
+            alert('Problème génération zip photos: ' + resultat);
         },
         complete: function (resultat, statut) {
             $('.loader').empty('.svg-loader');
@@ -122,4 +124,8 @@ function setJsonStatut(ligne, date) {
 
         }
     });
+}
+
+function viewReport(ligne, date) {
+    window.open(Routing.generate('pa_zip_report', { ligne: ligne, date: date }, true), "_blank");
 }

@@ -7,6 +7,8 @@
     {{ parent() }}
 {% endblock %}
 
+<span class="url_photos_api">{{url_photos_api}}</span>
+
     <div class="container content">
 
         <h3>Liste des lignes à exporter en JSON</h3>
@@ -42,6 +44,11 @@
                                 {% for ligne in listLignes %}
                                     <tr>
                                         <td class="text-center">
+                                            <button class="btn btn-xs btn-warning generate-zip-file">Zipper photos</button>
+                                            <button class="btn btn-xs btn-primary report-zip-file hide"
+                                            onclick="viewReport( '{{ligne['ligne']}}', '{{ligne['date']}}' );">
+                                                Rapport zip
+                                            </button>
                                             <span class="btn btn-xs btn-success generate-json">JSON</span>
                                         </td>
                                         <td><span class="ligne">{{ligne['ligne']}}</span></td>

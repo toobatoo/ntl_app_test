@@ -9,3 +9,53 @@ body{ padding-top: 70px; }
  .url_photos_api{
     visibility: hidden;
 }
+.hide{
+    visibility: hidden;
+}
+.show-this{
+    visibility: visible;
+}
+.badge-zip{
+    background-color: blueviolet;
+    font-size: 1.6rem;
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+}
+.table-borderless > tbody > tr > td.no-border,
+.table-borderless > thead > tr > td, {
+    border: none;
+}
+
+.container-img{
+    border-radius: 5px;
+}
+.list{
+    background-color: rgba(220,220,220, .5);
+    padding-top:1px;
+    padding-bottom: 1px;
+    border-radius: 5px;
+    height: 100%;
+}
+.back-gray{
+background-color: #6c757d;
+color: white;
+}
+.hover-bigger{
+    transition: all .2s ease-in-out;
+}
+.hover-bigger:hover{
+    transform: scale(1.3);
+}
+
+.liner-green {
+    border: 1px solid #155723;
+    border-radius: 5px;
+    padding: 2px 5px 2px 5px;
+}
+.liner-red {
+    border: 1px solid #7d2b32;
+    border-radius: 5px;
+    padding: 2px 5px 2px 5px;
+}
