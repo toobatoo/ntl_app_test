@@ -7,7 +7,7 @@ $(document).ready(function () {
 
         var ligne = $(this).parent().next('td').find('.ligne').text();
         var date = $(this).parent().next('td').next('td').find('.date').text();
-        alert(base_url);
+
         setTimeout(createZipPhotos($(this), ligne, date), 1000);
     });
 
