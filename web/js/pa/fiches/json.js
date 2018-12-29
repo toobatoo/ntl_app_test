@@ -8,7 +8,7 @@ $(document).ready(function () {
         var ligne = $(this).parent().next('td').find('.ligne').text();
         var date = $(this).parent().next('td').next('td').find('.date').text();
         alert(base_url);
-        // setTimeout(createZipPhotos($(this), ligne, date), 1000);
+        setTimeout(createZipPhotos($(this), ligne, date), 1000);
     });
 
     $('.generate-json').click(function () {
@@ -95,12 +95,35 @@ function generateJson(ligne, date) {
         success: function (response, statut) {
             if (response == true) {
                 alert('Exporté!');
-                setJsonStatut(ligne, date);
+                copyZipFile(ligne, date);
             }
         },
         error: function (resultat, statut, erreur) {
             $('.loader').empty('.svg-loader');
             alert('Problème export!');
+        },
+        complete: function (resultat, statut) {
+            $('.loader').empty('.svg-loader');
+        }
+    });
+}
+
+function copyZipFile(ligne, date) {
+    $.ajax({
+
+        url: $('.url_photos_api').text() + "_PA/copy-zip-pa",
+        type: 'POST',
+        async: false,
+        data: { ligne: ligne, date: date },
+        dataType: 'json',
+        success: function (response, statut) {
+            if (response == true)
+                setJsonStatut(ligne, date);
+            else alert('JSON exporté, mais zip photo non copié vers répertoire client!');
+        },
+        error: function (resultat, statut, erreur) {
+            $('.loader').empty('.svg-loader');
+            alert('JSON exporté, mais zip photo non copié vers répertoire client!');
         },
         complete: function (resultat, statut) {
             $('.loader').empty('.svg-loader');
