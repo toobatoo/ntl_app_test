@@ -45,12 +45,14 @@ function createZipPhotos(elem, ligne, date) {
         data: "ligne=" + ligne + "&date=" + date,
         dataType: 'json',
         success: function (response, statut) {
-            if (response == true) {
+            if (response == 2) {
                 alert('Zip photos généré!');
                 elem.parent().find('.generate-json').prop('disabled', false);
                 elem.removeClass('btn-warning').addClass('btn-success');
                 elem.parent().find('.report-zip-file').removeClass('hide').addClass('show-this');
             }
+            else if (response == 1) alert('Erreur: copie ok, mais zip non généré!');
+            else alert('Erreur!');
         },
         error: function (resultat, statut, erreur) {
             $('.loader').empty('.svg-loader');
