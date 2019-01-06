@@ -1,0 +1,90 @@
+{% extends 'base_pa.html.twig' %}
+
+{% block body %}
+
+<span class="url_photos_api">{{url_photos_api}}</span>
+ 
+    <table class="table table-borderless">
+    <thead>
+        <tr>
+            <td colspan="5" class="no-border">
+                <div class="alert alert-warning" role="alert">
+                    <strong>LIGNE <span class="ligne">{{ligne}}</span></strong> <br>
+                    <strong>DATE <span class="date">{{date}}</span></strong> <br>
+                    <form method="get" action="{{ asset('photos/bus/' ~ ligne ~ '_' ~ date_format ~ '.zip') }}">
+                        <button type="submit"
+                            class="btn btn-xs btn-warning">
+                            TELECHARGER LE FICHIER ZIP
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5" class="no-border">
+                <h4>INFORMATIONS DU FICHIER ZIP</h4>
+            </th>
+        </tr>
+
+        <tr>
+            <th class="back-gray" colspan="2">Actions sur la photo originale</th>
+        </tr>
+
+        <tr>
+            <th class="text-left back-gray">Modifier</th>
+            <th class="text-left back-gray">Supprimer</th>
+            <th class="text-left">Id global</th>
+            <th class="text-left">Nom photo</th>
+            <th class="text-left">Status</th>
+            <th class="text-left">Photo</th>
+        </tr>
+        </thead>
+        {% for photo in list %}
+            <tr>
+                <td class="text-center" style='text-align:center;vertical-align:middle;cursor:pointer;'>
+                    <span class="text-info edit" ><i class="fas fa-edit"></i></span>
+                    <div class="form-edit">
+                        <form class="form" method="POST" enctype="multipart/form-data">
+                            <input type="file"
+                            accept="image/png, image/jpeg"
+                            name="input_file"
+                            class="input_file" />
+                            <input type="hidden" name="path_photo" class="path_photo" 
+                                    value="{{ asset('photos/bus/' ~ photo['photo_name']) }}" />
+                            <input type="hidden" name="id_mesure" class="id_mesure" value="{{photo['id_mesure']}}" />
+                            <input type="hidden" name="photo_name" class="photo_name" value="{{photo['photo_name']}}" />
+                            <hr>
+                            <input type="submit" class="btn btn-xs btn-primary submit" value="Valider le choix du fichier" />
+                        </form>
+                    </div>
+                </td>
+                <td class="text-center hover-bigger" style='text-align:center;vertical-align:middle;cursor:pointer;'>
+                    <span class="text-danger delete" onclick="remove( '{{photo['id_mesure']}}', '{{photo['photo_name']}}', this );"><i class="far fa-trash-alt"></i></span>
+                </td>
+                <td class="text-left" style='text-align:center;vertical-align:middle'>{{photo['id_mesure']}}</td>
+                <td class="text-left" style='text-align:center;vertical-align:middle'>{{photo['photo_name']}}</td>
+                <td class="text-left" style='text-align:center;vertical-align:middle'>
+                    
+                    {% if photo['status'] == 'exported' %}
+                        <span class="text-success liner-green">{{photo['status']}}</span>
+                    {% else %}
+                        <span class="text-danger liner-red">{{photo['status']}}</span>
+                    {% endif %}
+
+                </td>
+                <td class="text-center">
+                <div class="list">
+                   <img style="cursor: pointer;vertical-align: middle;"
+                   onclick="viewImg( '{{ligne}}', '{{date_format}}', '{{photo['photo_name']}}' );"
+                   class="container-img" src="{{ asset('photos/bus/' ~ ligne ~ '_' ~ date_format ~ '/' ~ photo['photo_name']) }}" width="15%"/>
+                </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bus/zip.js') }}"></script>
+{% endblock %}

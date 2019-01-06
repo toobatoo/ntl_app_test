@@ -8,7 +8,7 @@ $(document).ready(function () {
     var ligne = $(this).parent().next('td').find('.ligne').text();
     var date = $(this).parent().next('td').next('td').find('.date').text();
 
-    // setTimeout(createZipPhotos($(this), ligne, date), 1000);
+    setTimeout(createZipPhotos($(this), ligne, date), 1000);
   });
 
   $('.generate-json').click(function () {
@@ -37,19 +37,21 @@ $(document).ready(function () {
 function createZipPhotos(elem, ligne, date) {
 
   $.ajax({
-
-    url: $('.url_photos_api').text() + "/generate-photo-zip-bus",
+    url: $('.url_photos_api').text() + "_BUS/generate-photo-zip-bus",
     type: 'POST',
     async: false,
     data: "ligne=" + ligne + "&date=" + date,
     dataType: 'json',
     success: function (response, statut) {
-      if (response == true) {
+      if (response == 2) {
         alert('Zip photos généré!');
         elem.parent().find('.generate-json').prop('disabled', false);
         elem.removeClass('btn-warning').addClass('btn-success');
         elem.parent().find('.report-zip-file').removeClass('hide').addClass('show-this');
       }
+      else if (response == 1) alert('Erreur: copie ok, mais zip non généré!');
+      else if (response == -10) alert('Aucune photos pour cette mesure.');
+      else alert('Erreur!');
     },
     error: function (resultat, statut, erreur) {
       $('.loader').empty('.svg-loader');
@@ -91,7 +93,8 @@ function generateJson(ligne, date) {
     dataType: 'json',
     success: function (response, statut) {
       //setJsonStatut( ligne, date );
-      window.location.reload();
+      // window.location.reload();
+      copyZipFile(ligne, date);
     },
     error: function (resultat, statut, erreur) {
       $('.loader').empty('.svg-loader');
@@ -110,7 +113,6 @@ function generateJson(ligne, date) {
           var direction = response.direction;
           var message = response.message;
           setAlertHTML(id_global, montee, direction, message, ligne);
-
         },
         error: function (resultat, statut, erreur) { },
         complete: function (resultat, statut) { }
@@ -118,6 +120,31 @@ function generateJson(ligne, date) {
     },
     complete: function (resultat, statut) {
 
+      $('.loader').empty('.svg-loader');
+    }
+  });
+}
+
+function copyZipFile(ligne, date) {
+  $.ajax({
+
+    url: $('.url_photos_api').text() + "_BUS/copy-zip-bus",
+    type: 'POST',
+    async: false,
+    data: { ligne: ligne, date: date },
+    dataType: 'json',
+    success: function (response, statut) {
+      if (response == true) {
+        // setJsonStatut(ligne, date);
+        window.location.reload();
+      }
+      else alert('JSON exporté, mais zip photo non copié vers répertoire client!');
+    },
+    error: function (resultat, statut, erreur) {
+      $('.loader').empty('.svg-loader');
+      alert('JSON exporté, mais zip photo non copié vers répertoire client!');
+    },
+    complete: function (resultat, statut) {
       $('.loader').empty('.svg-loader');
     }
   });
@@ -158,5 +185,5 @@ function setAlertHTML(id_global, montee, direction, message, ligne) {
 }
 
 function viewReport(ligne, date) {
-  window.open(Routing.generate('pa_zip_report', { ligne: ligne, date: date }, true), "_blank");
+  window.open(Routing.generate('bus_zip_report', { ligne: ligne, date: date }, true), "_blank");
 }
