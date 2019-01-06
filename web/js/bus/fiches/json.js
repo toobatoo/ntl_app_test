@@ -2,7 +2,7 @@ $(document).ready(function () {
   $('.generate-json').prop('disabled', true);
 
   $('.generate-zip-file').click(function () {
-    var base_url = Routing.getBaseUrl().replace(/\w+\.php$/gi, ''); alert(base_url)
+    var base_url = Routing.getBaseUrl().replace(/\w+\.php$/gi, '');
     $('.loader').append('<img src="' + base_url + 'images/gears.svg" class="svg-loader" />');
 
     var ligne = $(this).parent().next('td').find('.ligne').text();
