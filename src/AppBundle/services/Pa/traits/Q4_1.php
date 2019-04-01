@@ -12,11 +12,11 @@ trait Q4_1
 						"saisieLibre":"",
 						"nombre":"",
 						"isReponseOui":false,
+						"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'",
 						"itemChoixMobileAndroidList":[
 							{
 								"itemChoixId": 1216,
-								"isReponseOui":true,
-								"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'"
+								"isReponseOui":true
 							}
 						]
 					},';
@@ -29,11 +29,11 @@ trait Q4_1
 						"saisieLibre":"",
 						"nombre":"",
 						"isReponseOui":false,
+						"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'",
 						"itemChoixMobileAndroidList":[
 							{
 								"itemChoixId": 1217,
-								"isReponseOui":true,
-								"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'"
+								"isReponseOui":true
 							}
 						]
 					},';
@@ -46,11 +46,11 @@ trait Q4_1
 						"saisieLibre":"",
 						"nombre":"",
 						"isReponseOui":false,
+						"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'",
 						"itemChoixMobileAndroidList":[
 							{
 								"itemChoixId": 1218,
-								"isReponseOui":true,
-								"commentaire": "'.str_replace('"','',$Q_4_1_obs_in).'"
+								"isReponseOui":true
 							}
 						]
 					},';
